@@ -161,6 +161,10 @@ class SyncController extends pm_Controller_Action
               'label' => pm_Locale::lmsg('form.trafficThruCloudflare'),
               'value' => Modules_CloudflareDnsSync_Helper_DomainSettings::useCloudflareProxy($siteID),
           ));
+          $form->addElement('checkbox', Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, array(
+              'label' => pm_Locale::lmsg('form.automaticSync'),
+              'value' => pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, true),
+          ));
           $form->addElement('multiCheckbox', Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_SYNC_TYPES, array(
               'label' => pm_Locale::lmsg('form.selectRecord'),
               'multiOptions' => $recordOptions,
@@ -168,12 +172,14 @@ class SyncController extends pm_Controller_Action
           ));
 
           $form->addControlButtons(array(
-              'sendTitle' => 'Save',
+              'sendTitle' => pm_Locale::lmsg('button.save'),
               'cancelLink' => pm_Context::getActionUrl('sync', 'settings?site_id=' . $siteID),
           ));
 
           if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             pm_Settings::set(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_PROXY, $siteID), $form->getValue(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_PROXY));
+
+            pm_Settings::set(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, $siteID), $form->getValue(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC));
 
             foreach ($recordOptions as $option) {
               try {
