@@ -163,7 +163,7 @@ class SyncController extends pm_Controller_Action
           ));
           $form->addElement('checkbox', Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, array(
               'label' => pm_Locale::lmsg('form.automaticSync'),
-              'value' => pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, true),
+              'value' => pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, $siteID), true),
           ));
           $form->addElement('multiCheckbox', Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_SYNC_TYPES, array(
               'label' => pm_Locale::lmsg('form.selectRecord'),
