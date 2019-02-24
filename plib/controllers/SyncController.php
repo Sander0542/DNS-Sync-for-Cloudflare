@@ -61,6 +61,8 @@ class SyncController extends pm_Controller_Action
 
           if (pm_Session::getClient()->hasPermission('manage_cloudflare_settings', pm_Domain::getByDomainId($siteID))) {
 
+            pm_Settings::set(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_DOMAIN_USER, $siteID), pm_Session::getClient()->getId());
+
             $this->view->tabs[0]['active'] = true;
 
             try {
