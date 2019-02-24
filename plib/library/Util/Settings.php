@@ -7,6 +7,7 @@ class Modules_CloudflareDnsSync_Util_Settings
 
   const CLOUDFLARE_PROXY = 'cloudflareProxy';
   const CLOUDFLARE_SYNC_TYPES = 'cloudflareSyncTypes';
+  const CLOUDFLARE_AUTO_SYNC = 'cloudflareAutomaticSync';
 
   const CLOUDFLARE_DOMAIN_USER = 'cloudflareDomainUser';
 
