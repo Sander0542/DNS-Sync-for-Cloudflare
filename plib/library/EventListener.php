@@ -17,7 +17,7 @@ class Modules_CloudflareDnsSync_EventListener implements EventListener
         try {
           $domain = pm_Domain::getByName($oldValues['Domain Name']);
 
-          if (pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, $domain->getId()), false)) {
+          if (pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, $domain->getId()), true)) {
 
             //Get the User with Sync Access
             $userID = pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_DOMAIN_USER, $domain->getId()));
