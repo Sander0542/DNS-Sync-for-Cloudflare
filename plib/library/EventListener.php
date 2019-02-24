@@ -17,20 +17,23 @@ class Modules_CloudflareDnsSync_EventListener implements EventListener
         try {
           $domain = pm_Domain::getByName($oldValues['Domain Name']);
 
-          //Get the User with Sync Access
-          $userID = pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_DOMAIN_USER, $domain->getId()));
+          if (pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_AUTO_SYNC, $domain->getId()), false)) {
 
-          if ($userID !== null) {
-            $cloudflare = Modules_CloudflareDnsSync_Cloudflare::login(
-                pm_Settings::getDecrypted(Modules_CloudflareDnsSync_Util_Settings::getUserKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_EMAIL, $userID)),
-                pm_Settings::getDecrypted(Modules_CloudflareDnsSync_Util_Settings::getUserKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_API_KEY, $userID))
-            );
+            //Get the User with Sync Access
+            $userID = pm_Settings::get(Modules_CloudflareDnsSync_Util_Settings::getDomainKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_DOMAIN_USER, $domain->getId()));
 
-            //Try to Sync the DNS
-            if ($cloudflare !== false) {
-              //Sync the DNS Zone
-              $syncDNS = new Modules_CloudflareDnsSync_Util_SyncDNS($domain->getId(), $cloudflare, new Modules_CloudflareDnsSync_PleskDNS());
-              $syncDNS->syncAll();
+            if ($userID !== null) {
+              $cloudflare = Modules_CloudflareDnsSync_Cloudflare::login(
+                  pm_Settings::getDecrypted(Modules_CloudflareDnsSync_Util_Settings::getUserKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_EMAIL, $userID)),
+                  pm_Settings::getDecrypted(Modules_CloudflareDnsSync_Util_Settings::getUserKey(Modules_CloudflareDnsSync_Util_Settings::CLOUDFLARE_API_KEY, $userID))
+              );
+
+              //Try to Sync the DNS
+              if ($cloudflare !== false) {
+                //Sync the DNS Zone
+                $syncDNS = new Modules_CloudflareDnsSync_Util_SyncDNS($domain->getId(), $cloudflare, new Modules_CloudflareDnsSync_PleskDNS());
+                $syncDNS->syncAll();
+              }
             }
           }
         } catch (pm_Exception $e) {
