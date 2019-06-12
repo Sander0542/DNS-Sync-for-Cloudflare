@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
   <id>dns-sync-cloudflare</id>
-  <name>Module dns-sync-cloudflare</name>
-  <description>Add module description here...</description>
-  <version>1.0</version>
+  <name>DNS Sync for Cloudflare</name>
+  <description>Sync your Plesk DNS records with Cloudflare DNS records. This extension will use Plesk as the master DNS server. Cloudflare records will be created, overwritten or deleted. Cloudflare® is a registered trademark of Cloudflare, Inc</description>
+  <category>dns</category>
+  <category>server_tool</category>
+  <category>performance</category>
+  <version>0.1</version>
   <release>1</release>
-  <vendor/>
-  <url>http://your-company-web-site</url>
-  <plesk_min_version>17.8.11</plesk_min_version>
+  <vendor>Sander Jochems</vendor>
+  <url>https://www.sanderjochems.com/</url>
+  <support_url>https://github.com/Sander0542/DNS-Sync-for-Cloudflare</support_url>
+  <help_url>https://github.com/Sander0542/DNS-Sync-for-Cloudflare/wiki</help_url>
+  <plesk_min_version>17.8</plesk_min_version>
 </module>
