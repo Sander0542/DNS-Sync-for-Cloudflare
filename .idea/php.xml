@@ -14,4 +14,9 @@
       <path value="$PROJECT_DIR$/plib/vendor/cloudflare/sdk" />
     </include_path>
   </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/plib/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
 </project>
