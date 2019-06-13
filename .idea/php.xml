@@ -14,7 +14,7 @@
       <path value="$PROJECT_DIR$/plib/vendor/cloudflare/sdk" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
   <component name="PhpRuntimeConfiguration" document_root_path="htdocs">
     <extensions>
       <extension name="Ev" enabled="false" />
