@@ -16,7 +16,7 @@ class Modules_DnsSyncCloudflare_Util_Settings
         return 'u'.(is_numeric($userID) ? $userID : pm_Session::getClient()->getId()).'_'.$key;
     }
 
-    public static function getDomainKey($key, $site_id)
+    public static function getDomainKey($key, int $site_id)
     {
         return 'd'.$site_id.'_'.$key;
     }
