@@ -22,7 +22,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Record
 
     /**
      * @param PleskRecord $pleskRecord
-     * @return Modules_DnsSyncCloudflare_Cloudflare_Record
+     * @return self
      */
     public static function fromPleskRecord(PleskRecord $pleskRecord)
     {
