@@ -1,8 +1,8 @@
 <?php
 
 use PleskX\Api\Struct\Dns\Info as PleskRecord;
-use \Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
-use \Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
+use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
 
 class Modules_DnsSyncCloudflare_Records_Match
 {
