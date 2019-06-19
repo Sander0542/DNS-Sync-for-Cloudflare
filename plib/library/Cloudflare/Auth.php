@@ -6,6 +6,7 @@ use Cloudflare\API\Endpoints\DNS;
 use Cloudflare\API\Endpoints\Zones;
 use Cloudflare\API\Endpoints\User;
 use GuzzleHttp\Exception\ClientException;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class Modules_DnsSyncCloudflare_Cloudflare_Auth
 {
@@ -49,7 +50,6 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
 
     /**
      * @param pm_Domain $domain
-     * @param bool $useAll
      * @return object|null
      */
     public function getZone(pm_Domain $domain)
@@ -68,14 +68,20 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
         return null;
     }
 
+    public function getRecords(pm_Domain $domain) {
+        $zoneID = $this->getZone($domain)->id;
+
+        return $this->getDNS()->listRecords($zoneID, '', '', '', 1, 250)->result;
+    }
+
     /**
      * @param pm_Domain $domain
      * @return Modules_DnsSyncCloudflare_Cloudflare_Auth|null
      */
     public static function login(pm_Domain $domain)
     {
-        $email = pm_Settings::getDecrypted(Modules_DnsSyncCloudflare_Util_Settings::getDomainKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_EMAIL, $domain->getId()));
-        $apiKey = pm_Settings::getDecrypted(Modules_DnsSyncCloudflare_Util_Settings::getDomainKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY, $domain->getId()));
+        $email = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain->getId()));
+        $apiKey = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain->getId()));
 
         try
         {
@@ -83,7 +89,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
             {
                 $key = new APIKey($email, $apiKey);
                 $adapter = new Guzzle($key);
-                return new Modules_DnsSyncCloudflare_Cloudflare_Auth($adapter);
+                return new self($adapter);
             }
         }
         catch (ClientException $exception)
