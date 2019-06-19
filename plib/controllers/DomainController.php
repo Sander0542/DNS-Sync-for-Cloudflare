@@ -71,6 +71,21 @@ class DomainController extends pm_Controller_Action
         }
     }
 
+    public function recordsDataAction()
+    {
+
+        $access = Modules_DnsSyncCloudflare_Util_Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+
+        if ($access instanceof pm_Domain)
+        {
+            $domain = $access;
+
+            $list = $this->_getRecordsList($domain->getId());
+            // Json data from pm_View_List_Simple
+            $this->_helper->json($list->fetchData());
+        }
+    }
+
     public function apiAction()
     {
         //Set the active tab
@@ -116,6 +131,37 @@ class DomainController extends pm_Controller_Action
         {
             $this->_status->addMessage('error', $access);
         }
+    }
+
+    private function _getRecordsList($siteID)
+    {
+//        $data = (new Modules_CloudflareDnsSync_List_DNS($siteID, $this->cloudflare, new Modules_CloudflareDnsSync_PleskDNS()))->getList();
+        $list = new pm_View_List_Simple($this->view, $this->_request);
+        $list->setData([]);
+        $list->setColumns(array(
+            'col-host' => array(
+                'title' => pm_Locale::lmsg('table.host'),
+                'noEscape' => true,
+            ),
+            'col-type' => array(
+                'title' => pm_Locale::lmsg('table.recordType'),
+                'noEscape' => true,
+            ),
+            'col-status' => array(
+                'title' => pm_Locale::lmsg('table.status'),
+                'noEscape' => true,
+            ),
+            'col-plesk' => array(
+                'title' => pm_Locale::lmsg('table.pleskValue'),
+                'noEscape' => true,
+            ),
+            'col-cloudflare' => array(
+                'title' => pm_Locale::lmsg('table.cloudflareValue'),
+                'noEscape' => true,
+            )
+        ));
+        $list->setDataUrl(array('action' => 'records-data?site_id='.$siteID));
+        return $list;
     }
 
 }
