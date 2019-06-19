@@ -1,11 +1,13 @@
 <?php
 
 use GuzzleHttp\Exception\ClientException;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
+use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
 
 class IndexController extends pm_Controller_Action
 {
     /**
-     * @var $cloudflare Modules_DnsSyncCloudflare_Cloudflare_Auth
+     * @var $cloudflare CloudflareAuth
      */
     private $cloudflare;
 
@@ -30,16 +32,10 @@ class IndexController extends pm_Controller_Action
         }
     }
 
-    public function indexDataAction()
-    {
-        $list = $this->_getDomainList();
-        // Json data from pm_View_List_Simple
-        $this->_helper->json($list->fetchData());
-    }
-
     public function domainDataAction()
     {
-        if ($this->cloudflare !== false) {
+        if ($this->cloudflare !== false)
+        {
             $list = $this->_getDomainList();
             // Json data from pm_View_List_Simple
             $this->_helper->json($list->fetchData());
@@ -48,7 +44,7 @@ class IndexController extends pm_Controller_Action
 
     private function _getDomainList()
     {
-        $data = array();
+        $data = [];
 
         /**
          * @var $domain pm_Domain
@@ -57,37 +53,39 @@ class IndexController extends pm_Controller_Action
         {
             $cloudflareID = pm_Locale::lmsg('text.zoneIdNotFound');
 
-            $auth = Modules_DnsSyncCloudflare_Cloudflare_Auth::login($domain);
+            $auth = CloudflareAuth::login($domain);
 
-            if ($auth !== null) {
+            if ($auth !== null)
+            {
                 /**
-                 * @var $zone Modules_DnsSyncCloudflare_Cloudflare_Record
+                 * @var $zone CloudflareRecord
                  */
                 $zone = $auth->getZone($domain);
-                if ($zone !== null) {
+                if ($zone !== null)
+                {
                     $cloudflareID = $zone->id;
                 }
             }
 
-            $data[] = array(
-                'col-domain' => '<a href="'.pm_Context::getActionUrl('domain', 'records?site_id='.$domain->getId()).'">'.$domain->getName().'</a>',
+            $data[] = [
+                'col-domain' => '<a href="' . pm_Context::getActionUrl('domain', 'records?site_id=' . $domain->getId()) . '">' . $domain->getName() . '</a>',
                 'col-zone' => $cloudflareID,
-            );
+            ];
         }
 
         $list = new pm_View_List_Simple($this->view, $this->_request);
         $list->setData($data);
-        $list->setColumns(array(
-            'col-domain' => array(
+        $list->setColumns([
+            'col-domain' => [
                 'title' => pm_Locale::lmsg('table.domainName'),
                 'noEscape' => true,
-            ),
-            'col-zone' => array(
+            ],
+            'col-zone' => [
                 'title' => pm_Locale::lmsg('table.cloudflareZoneID'),
                 'noEscape' => true,
-            )
-        ));
-        $list->setDataUrl(array('action' => 'domain-data'));
+            ]
+        ]);
+        $list->setDataUrl(['action' => 'domain-data']);
 
         return $list;
     }
