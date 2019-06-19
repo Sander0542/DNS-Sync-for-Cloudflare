@@ -7,6 +7,7 @@ use Cloudflare\API\Endpoints\Zones;
 use Cloudflare\API\Endpoints\User;
 use GuzzleHttp\Exception\ClientException;
 use Modules_DnsSyncCloudflare_Util_Settings as Settings;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 
 class Modules_DnsSyncCloudflare_Cloudflare_Auth
 {
@@ -55,7 +56,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
     public function getZone(pm_Domain $domain)
     {
         /**
-         * @var $zone Modules_DnsSyncCloudflare_Cloudflare_Record
+         * @var $zone CloudflareRecord
          */
         foreach ($this->getZones()->listZones()->result as $zone)
         {
@@ -76,7 +77,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
 
     /**
      * @param pm_Domain $domain
-     * @return Modules_DnsSyncCloudflare_Cloudflare_Auth|null
+     * @return self|null
      */
     public static function login(pm_Domain $domain)
     {
