@@ -95,7 +95,15 @@ class DomainController extends pm_Controller_Action
 
         if ($access instanceof pm_Domain)
         {
+
             $domain = $access;
+
+            $cloudflare = Modules_DnsSyncCloudflare_Cloudflare_Auth::login($domain);
+
+            if ($cloudflare !== null)
+            {
+                $this->_status->addMessage('info', pm_Locale::lmsg('message.signedInAs', (array)$cloudflare->getUser()->getUserDetails()));
+            }
 
             // Create a new Form
             $form = new pm_Form_Simple();
@@ -105,14 +113,21 @@ class DomainController extends pm_Controller_Action
                 'required' => true,
                 'validator' => array(
                     array('EmailAddress', true)
-                )
+                ),
+                'attribs' => [
+                    'style' => 'width:320px',
+                ]
             ));
             $form->addElement('Text', Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY, array(
                 'label' => pm_Locale::lmsg('form.cloudflareApiKey'),
+//                'value' => pm_Settings::getDecrypted(Modules_DnsSyncCloudflare_Util_Settings::getUserKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY)),
                 'required' => true,
                 'validator' => array(
                     array('NotEmpty', true)
-                )
+                ),
+                'attribs' => [
+                    'style' => 'width:320px',
+                ]
             ));
             $form->addControlButtons(array(
                 'cancelLink' => pm_Context::getModulesListUrl(),
