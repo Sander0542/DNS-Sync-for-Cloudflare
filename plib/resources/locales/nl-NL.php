@@ -48,4 +48,5 @@ $messages = [
     'message.noRecordsEdited' => 'Geen records gemaakt of geupdate.',
     'message.xRecordsCreated' => '%%count%% record(s) gemaakt.',
     'message.xRecordsUpdated' => '%%count%% record(s) geupdate.',
+    'message.signedInAs' => 'Ingelogd als %%email%%.',
 ];
