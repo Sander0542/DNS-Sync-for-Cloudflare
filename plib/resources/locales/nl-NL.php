@@ -37,7 +37,7 @@ $messages = [
     'text.recordNotFound' => 'Record niet gevonden',
 
     'message.apiSaved' => 'API-instellingen zijn succesvol opgeslagen.',
-    'message.settingsSaved' => 'Domeininstellingen zijn succesvol opgeslagen.',
+    'message.settingsSaved' => 'De instellingen zijn succesvol opgeslagen.',
     'message.noConnection' => 'Kon niet verbinden met Cloudflare.',
     'message.couldNotSync' => 'De Plesk DNS-zone kon niet worden gesynchroniseerd met Cloudflare.',
     'message.noCloudflareZoneFound' => 'Kan geen Cloudflare zone voor dit domein gevonden worden.',
@@ -46,7 +46,6 @@ $messages = [
     'message.noAccessSettings' => 'U heeft geen toegang tot de domein instellingen.',
     'message.noDomainSelected' => 'Er was geen domein geselecteerd.',
     'message.noRecordsEdited' => 'Geen records gemaakt of geupdate.',
-    'message.xRecordsCreated' => '%%count%% record(s) gemaakt.',
-    'message.xRecordsUpdated' => '%%count%% record(s) geupdate.',
+    'message.xRecordsUpdated' => '%%count%% record(s) gemaakt of geupdate.',
     'message.signedInAs' => 'Ingelogd als %%email%%.',
 ];

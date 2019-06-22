@@ -30,14 +30,15 @@ $messages = [
     'table.cloudflareValue' => 'Cloudflare Value',
     'table.pleskValue' => 'Plesk Value',
 
-    'button.syncDNS' => 'Sync DNS',
+    'button.syncAll' => 'Sync All',
+    'button.syncSelected' => 'Sync Selected',
     'button.save' => 'Save',
 
     'text.zoneIdNotFound' => 'Zone ID not found',
     'text.recordNotFound' => 'Record not found',
 
     'message.apiSaved' => 'API Settings were successfully saved.',
-    'message.settingsSaved' => 'Domain Settings were successfully saved.',
+    'message.settingsSaved' => 'The Settings were successfully saved.',
     'message.noConnection' => 'Could not connect to Cloudflare.',
     'message.couldNotSync' => 'Could not sync the Plesk DNS zone to Cloudflare.',
     'message.noCloudflareZoneFound' => 'Could not find a Cloudflare zone for this domain.',
@@ -45,9 +46,8 @@ $messages = [
     'message.noAccessExtension' => 'You do not have access to DNS Sync for Cloudflare.',
     'message.noAccessSettings' => 'You do not have access to the domain settings.',
     'message.noDomainSelected' => 'There was no domain selected.',
-    'message.noRecordsEdited' => 'No records created of updated.',
-    'message.xRecordsCreated' => '%%count%% record(s) created.',
-    'message.xRecordsUpdated' => '%%count%% record(s) updated.',
+    'message.noRecordsEdited' => 'No records created or updated.',
+    'message.xRecordsUpdated' => '%%count%% record(s )created or updated.',
     'message.signedInAs' => 'Signed in as %%email%%.',
 
     'permission.cloudflare.title' => 'DNS Sync for Cloudflare',
