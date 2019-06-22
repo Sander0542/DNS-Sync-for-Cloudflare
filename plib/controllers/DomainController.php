@@ -1,7 +1,11 @@
 <?php
 
-
-use GuzzleHttp\Exception\ClientException;
+use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
+use Modules_DnsSyncCloudflare_Records_List as RecordList;
+use Modules_DnsSyncCloudflare_Records_SyncRecord as SyncRecord;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
+use Modules_DnsSyncCloudflare_Util_Permissions as Permissions;
+use Modules_DnsSyncCloudflare_Util_Records as RecordsUtil;
 
 class DomainController extends pm_Controller_Action
 {
@@ -18,15 +22,15 @@ class DomainController extends pm_Controller_Action
         $this->view->tabs = [
             [
                 'title' => pm_Locale::lmsg('tab.records'),
-                'action' => 'records?site_id='.$siteID,
+                'action' => 'records?site_id=' . $siteID,
             ],
             [
                 'title' => pm_Locale::lmsg('tab.settings'),
-                'action' => 'settings?site_id='.$siteID,
+                'action' => 'settings?site_id=' . $siteID,
             ],
             [
                 'title' => pm_Locale::lmsg('tab.api'),
-                'action' => 'api?site_id='.$siteID,
+                'action' => 'api?site_id=' . $siteID,
             ],
         ];
     }
@@ -36,7 +40,7 @@ class DomainController extends pm_Controller_Action
         //Set the active tab
         $this->view->tabs[0]['active'] = true;
 
-        $access = Modules_DnsSyncCloudflare_Util_Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
 
         if ($access instanceof pm_Domain)
         {
@@ -44,7 +48,7 @@ class DomainController extends pm_Controller_Action
 
             $this->view->pageTitle = pm_Locale::lmsg('title.dnsSyncFor', ['domain' => $domain->getName()]);
 
-            $cloudflare = Modules_DnsSyncCloudflare_Cloudflare_Auth::login($domain);
+            $cloudflare = CloudflareAuth::login($domain);
 
             if ($cloudflare !== null)
             {
@@ -74,7 +78,7 @@ class DomainController extends pm_Controller_Action
     public function recordsDataAction()
     {
 
-        $access = Modules_DnsSyncCloudflare_Util_Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
 
         if ($access instanceof pm_Domain)
         {
@@ -91,14 +95,16 @@ class DomainController extends pm_Controller_Action
         //Set the active tab
         $this->view->tabs[2]['active'] = true;
 
-        $access = Modules_DnsSyncCloudflare_Util_Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
 
         if ($access instanceof pm_Domain)
         {
 
             $domain = $access;
 
-            $cloudflare = Modules_DnsSyncCloudflare_Cloudflare_Auth::login($domain);
+            $this->view->pageTitle = pm_Locale::lmsg('title.dnsSyncFor', ['domain' => $domain->getName()]);
+
+            $cloudflare = CloudflareAuth::login($domain);
 
             if ($cloudflare !== null)
             {
