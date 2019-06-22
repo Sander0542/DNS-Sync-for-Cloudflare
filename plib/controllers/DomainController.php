@@ -77,6 +77,21 @@ class DomainController extends pm_Controller_Action
 
     public function recordsDataAction()
     {
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+
+        if ($access instanceof pm_Domain)
+        {
+            $domain = $access;
+
+            $cloudflare = CloudflareAuth::login($domain);
+
+            if ($cloudflare !== null)
+            {
+                $list = $this->_getRecordsList($domain, $cloudflare);
+                // Json data from pm_View_List_Simple
+                $this->_helper->json($list->fetchData());
+            }
+        }
 
         $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
 
