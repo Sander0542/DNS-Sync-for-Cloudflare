@@ -12,15 +12,16 @@ class Modules_DnsSyncCloudflare_Records_Match
      * @param PleskRecord $pleskRecord
      * @return CloudflareRecord|null
      */
-    public static function getCloudflareRecord($cloudflareRecords, PleskRecord $pleskRecord)
+    public static function getCloudflareRecord(&$cloudflareRecords, PleskRecord $pleskRecord)
     {
         /**
          * @var $cloudflareRecord CloudflareRecord
          */
-        foreach ($cloudflareRecords as $cloudflareRecord)
+        foreach ($cloudflareRecords as $key => $cloudflareRecord)
         {
             if (self::doRecordMatch($cloudflareRecord, $pleskRecord))
             {
+                unset($cloudflareRecords[$key]);
                 return $cloudflareRecord;
             }
         }
