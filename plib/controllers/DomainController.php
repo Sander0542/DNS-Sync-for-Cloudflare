@@ -156,32 +156,33 @@ class DomainController extends pm_Controller_Action
 
     private function _getRecordsList($siteID)
     {
-//        $data = (new Modules_CloudflareDnsSync_List_DNS($siteID, $this->cloudflare, new Modules_CloudflareDnsSync_PleskDNS()))->getList();
+        $data = (new RecordList($domain, $cloudflare))->getList();
         $list = new pm_View_List_Simple($this->view, $this->_request);
-        $list->setData([]);
-        $list->setColumns(array(
-            'col-host' => array(
+        $list->setColumns([
+            pm_View_List_Simple::COLUMN_SELECTION,
+            'col-host' => [
                 'title' => pm_Locale::lmsg('table.host'),
                 'noEscape' => true,
-            ),
-            'col-type' => array(
+            ],
+            'col-type' => [
                 'title' => pm_Locale::lmsg('table.recordType'),
                 'noEscape' => true,
-            ),
-            'col-status' => array(
+            ],
+            'col-status' => [
                 'title' => pm_Locale::lmsg('table.status'),
                 'noEscape' => true,
-            ),
-            'col-plesk' => array(
+            ],
+            'col-plesk' => [
                 'title' => pm_Locale::lmsg('table.pleskValue'),
                 'noEscape' => true,
-            ),
-            'col-cloudflare' => array(
+            ],
+            'col-cloudflare' => [
                 'title' => pm_Locale::lmsg('table.cloudflareValue'),
                 'noEscape' => true,
-            )
-        ));
-        $list->setDataUrl(array('action' => 'records-data?site_id='.$siteID));
+            ]
+        ]);
+        $list->setData($data);
+        $list->setDataUrl(['action' => 'records-data?site_id=' . $domain->getId()]);
         return $list;
     }
 
