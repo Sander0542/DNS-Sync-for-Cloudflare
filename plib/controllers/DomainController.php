@@ -113,37 +113,43 @@ class DomainController extends pm_Controller_Action
 
             // Create a new Form
             $form = new pm_Form_Simple();
-            $form->addElement('Text', Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_EMAIL, array(
+            $form->addElement('Text', Settings::CLOUDFLARE_EMAIL, [
                 'label' => pm_Locale::lmsg('form.cloudflareEmail'),
-                'value' => pm_Settings::getDecrypted(Modules_DnsSyncCloudflare_Util_Settings::getDomainKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_EMAIL, $domain->getId())),
+                'value' => pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain)),
                 'required' => true,
-                'validator' => array(
-                    array('EmailAddress', true)
-                ),
+                'validator' => [
+                    [
+                        'EmailAddress',
+                        true
+                    ]
+                ],
                 'attribs' => [
                     'style' => 'width:320px',
                 ]
-            ));
-            $form->addElement('Text', Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY, array(
+            ]);
+            $form->addElement('Text', Settings::CLOUDFLARE_API_KEY, [
                 'label' => pm_Locale::lmsg('form.cloudflareApiKey'),
-//                'value' => pm_Settings::getDecrypted(Modules_DnsSyncCloudflare_Util_Settings::getUserKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY)),
                 'required' => true,
-                'validator' => array(
-                    array('NotEmpty', true)
-                ),
+                'validator' => [
+                    [
+                        'NotEmpty',
+                        true
+                    ]
+                ],
                 'attribs' => [
                     'style' => 'width:320px',
                 ]
-            ));
-            $form->addControlButtons(array(
+            ]);
+            $form->addControlButtons([
                 'cancelLink' => pm_Context::getModulesListUrl(),
-            ));
+            ]);
 
-            if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-                pm_Settings::setEncrypted(Modules_DnsSyncCloudflare_Util_Settings::getDomainKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_EMAIL, $domain->getId()), $form->getValue(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_EMAIL));
-                pm_Settings::setEncrypted(Modules_DnsSyncCloudflare_Util_Settings::getDomainKey(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY, $domain->getId()), $form->getValue(Modules_DnsSyncCloudflare_Util_Settings::CLOUDFLARE_API_KEY));
+            if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost()))
+            {
+                pm_Settings::setEncrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain), $form->getValue(Settings::CLOUDFLARE_EMAIL));
+                pm_Settings::setEncrypted(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain), $form->getValue(Settings::CLOUDFLARE_API_KEY));
                 $this->_status->addMessage('info', pm_Locale::lmsg('message.apiSaved'));
-                $this->_helper->json(array('redirect' => pm_Context::getActionUrl('domain','records?site_id='.$domain->getId())));
+                $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $domain->getId())]);
             }
 
             $this->view->form = $form;
