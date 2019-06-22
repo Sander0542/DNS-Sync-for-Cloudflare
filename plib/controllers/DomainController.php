@@ -92,6 +92,12 @@ class DomainController extends pm_Controller_Action
                 $this->_helper->json($list->fetchData());
             }
         }
+    }
+
+    public function settingsAction()
+    {
+        //Set the active tab
+        $this->view->tabs[1]['active'] = true;
 
         $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
 
@@ -99,9 +105,52 @@ class DomainController extends pm_Controller_Action
         {
             $domain = $access;
 
-            $list = $this->_getRecordsList($domain->getId());
-            // Json data from pm_View_List_Simple
-            $this->_helper->json($list->fetchData());
+            $this->view->pageTitle = pm_Locale::lmsg('title.dnsSyncFor', ['domain' => $domain->getName()]);
+
+            //List the Type of available records
+            $recordOptions = RecordsUtil::getAvailableRecords();
+
+            $selectedRecords = array();
+            foreach ($recordOptions as $option) {
+                if (Settings::syncRecordType($option, $domain)) {
+                    array_push($selectedRecords, $option);
+                }
+            }
+
+            //Create a new Form
+            $form = new pm_Form_Simple();
+            $form->addElement('checkbox', Settings::CLOUDFLARE_PROXY, array(
+                'label' => pm_Locale::lmsg('form.trafficThruCloudflare'),
+                'value' => Settings::useCloudflareProxy($domain),
+            ));
+            $form->addElement('checkbox', Settings::CLOUDFLARE_AUTO_SYNC, array(
+                'label' => pm_Locale::lmsg('form.automaticSync'),
+                'value' => pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), true),
+            ));
+            $form->addElement('multiCheckbox', Settings::CLOUDFLARE_SYNC_TYPES, array(
+                'label' => pm_Locale::lmsg('form.selectRecord'),
+                'multiOptions' => $recordOptions,
+                'value' => $selectedRecords
+            ));
+
+            $form->addControlButtons(array(
+                'sendTitle' => pm_Locale::lmsg('button.save'),
+                'cancelLink' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId()),
+            ));
+
+            if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+                pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_PROXY, $domain), $form->getValue(Settings::CLOUDFLARE_PROXY));
+                pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), $form->getValue(Settings::CLOUDFLARE_AUTO_SYNC));
+                foreach ($recordOptions as $option) {
+                    try {
+                        pm_Settings::set(Settings::getDomainKey('record' . $option, $domain), in_array($option, $form->getValue(Settings::CLOUDFLARE_SYNC_TYPES)));
+                    } catch (Exception $e) {
+                    }
+                }
+                $this->_status->addMessage('info', pm_Locale::lmsg('message.settingsSaved'));
+                $this->_helper->json(array('redirect' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId())));
+            }
+            $this->view->form = $form;
         }
     }
 
@@ -114,7 +163,6 @@ class DomainController extends pm_Controller_Action
 
         if ($access instanceof pm_Domain)
         {
-
             $domain = $access;
 
             $this->view->pageTitle = pm_Locale::lmsg('title.dnsSyncFor', ['domain' => $domain->getName()]);
@@ -233,8 +281,14 @@ class DomainController extends pm_Controller_Action
             ]
         ]);
         $list->setData($data);
+        $list->setTools([
+            [
+                'title' => pm_Locale::lmsg('button.syncAll'),
+                'description' => 'Sync all the records.',
+                'action' => 'sync-all',
+            ],
+        ]);
         $list->setDataUrl(['action' => 'records-data?site_id=' . $domain->getId()]);
         return $list;
     }
-
 }
