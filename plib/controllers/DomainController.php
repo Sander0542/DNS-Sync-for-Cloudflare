@@ -56,7 +56,7 @@ class DomainController extends pm_Controller_Action
 
                 if ($zone !== null)
                 {
-
+                    $this->view->list = $this->_getRecordsList($domain, $cloudflare);
                 }
                 else
                 {
@@ -154,7 +154,6 @@ class DomainController extends pm_Controller_Action
         }
     }
 
-    private function _getRecordsList($siteID)
     public function syncAllAction()
     {
         $siteID = $this->getRequest()->getParam("site_id");
@@ -185,6 +184,7 @@ class DomainController extends pm_Controller_Action
         $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $siteID)]);
     }
 
+    private function _getRecordsList(pm_Domain $domain, $cloudflare)
     {
         $data = (new RecordList($domain, $cloudflare))->getList();
         $list = new pm_View_List_Simple($this->view, $this->_request);
