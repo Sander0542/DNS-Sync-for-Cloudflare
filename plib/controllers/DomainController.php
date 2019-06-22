@@ -155,6 +155,36 @@ class DomainController extends pm_Controller_Action
     }
 
     private function _getRecordsList($siteID)
+    public function syncAllAction()
+    {
+        $siteID = $this->getRequest()->getParam("site_id");
+
+        $access = Permissions::checkAccess($siteID);
+
+        if ($access instanceof pm_Domain)
+        {
+            $domain = $access;
+
+            $cloudflare = CloudflareAuth::login($domain);
+
+            if ($cloudflare !== null)
+            {
+                $records = SyncRecord::getRecords($domain, $cloudflare, true);
+
+                $successCount = 0;
+
+                foreach ($records as $record)
+                {
+                    if (Settings::syncRecordType($record->pleskRecord->type, $domain)) $successCount += $record->syncRecord() ? 1 : 0;
+                }
+
+                $this->_status->addMessage('error', pm_Locale::lmsg('message.xRecordsUpdated', ['count' => $successCount]));
+            }
+        }
+
+        $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $siteID)]);
+    }
+
     {
         $data = (new RecordList($domain, $cloudflare))->getList();
         $list = new pm_View_List_Simple($this->view, $this->_request);
