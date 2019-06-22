@@ -81,8 +81,8 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
      */
     public static function login(pm_Domain $domain)
     {
-        $email = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain->getId()));
-        $apiKey = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain->getId()));
+        $email = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain));
+        $apiKey = pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain));
 
         try
         {
