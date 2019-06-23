@@ -129,6 +129,10 @@ class DomainController extends pm_Controller_Action
                 'label' => pm_Locale::lmsg('form.automaticSync'),
                 'value' => pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), true),
             ]);
+            $form->addElement('checkbox', Settings::CLOUDFLARE_REMOVE_UNUSED, [
+                'label' => pm_Locale::lmsg('form.removeUnused'),
+                'value' => pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), true),
+            ]);
             $form->addElement('multiCheckbox', Settings::CLOUDFLARE_SYNC_TYPES, [
                 'label' => pm_Locale::lmsg('form.selectRecord'),
                 'multiOptions' => $recordOptions,
@@ -144,15 +148,10 @@ class DomainController extends pm_Controller_Action
             {
                 pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_PROXY, $domain), $form->getValue(Settings::CLOUDFLARE_PROXY));
                 pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), $form->getValue(Settings::CLOUDFLARE_AUTO_SYNC));
+                pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), $form->getValue(Settings::CLOUDFLARE_REMOVE_UNUSED));
                 foreach ($recordOptions as $option)
                 {
-                    try
-                    {
-                        pm_Settings::set(Settings::getDomainKey('record' . $option, $domain), in_array($option, $form->getValue(Settings::CLOUDFLARE_SYNC_TYPES)));
-                    }
-                    catch (Exception $e)
-                    {
-                    }
+                    pm_Settings::set(Settings::getDomainKey('record' . $option, $domain), in_array($option, $form->getValue(Settings::CLOUDFLARE_SYNC_TYPES)));
                 }
                 $this->_status->addMessage('info', pm_Locale::lmsg('message.settingsSaved'));
                 $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId())]);
@@ -244,7 +243,9 @@ class DomainController extends pm_Controller_Action
 
             if ($cloudflare !== null)
             {
-                $records = SyncRecord::getRecords($domain, $cloudflare, true);
+                $removeOld = pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), true);
+
+                $records = SyncRecord::getRecords($domain, $cloudflare, $removeOld);
 
                 $successCount = 0;
 

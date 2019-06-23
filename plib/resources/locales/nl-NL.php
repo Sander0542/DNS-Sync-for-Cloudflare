@@ -20,6 +20,7 @@ $messages = [
     'form.trafficThruCloudflare' => 'Verkeer door Cloudflare',
     'form.automaticSync' => 'Synchroniseer DNS automatisch',
     'form.selectRecord' => 'Selecteer het type records dat u wilt synchroniseren',
+    'form.removeUnused' => 'Verwijder niet gebruikte DNS records in Cloudflare',
 
     'table.domainName' => 'Domein Naam',
     'table.cloudflareZoneID' => 'Cloudflare Zone ID',

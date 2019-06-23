@@ -10,6 +10,7 @@ class Modules_DnsSyncCloudflare_Util_Settings
     const CLOUDFLARE_PROXY = 'cloudflareProxy';
     const CLOUDFLARE_SYNC_TYPES = 'cloudflareSyncTypes';
     const CLOUDFLARE_AUTO_SYNC = 'cloudflareAutomaticSync';
+    const CLOUDFLARE_REMOVE_UNUSED = 'cloudflareRemoveUnused';
 
     public static function getUserKey($key, $userID = null)
     {
