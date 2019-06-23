@@ -110,45 +110,52 @@ class DomainController extends pm_Controller_Action
             //List the Type of available records
             $recordOptions = RecordsUtil::getAvailableRecords();
 
-            $selectedRecords = array();
-            foreach ($recordOptions as $option) {
-                if (Settings::syncRecordType($option, $domain)) {
+            $selectedRecords = [];
+            foreach ($recordOptions as $option)
+            {
+                if (Settings::syncRecordType($option, $domain))
+                {
                     array_push($selectedRecords, $option);
                 }
             }
 
             //Create a new Form
             $form = new pm_Form_Simple();
-            $form->addElement('checkbox', Settings::CLOUDFLARE_PROXY, array(
+            $form->addElement('checkbox', Settings::CLOUDFLARE_PROXY, [
                 'label' => pm_Locale::lmsg('form.trafficThruCloudflare'),
                 'value' => Settings::useCloudflareProxy($domain),
-            ));
-            $form->addElement('checkbox', Settings::CLOUDFLARE_AUTO_SYNC, array(
+            ]);
+            $form->addElement('checkbox', Settings::CLOUDFLARE_AUTO_SYNC, [
                 'label' => pm_Locale::lmsg('form.automaticSync'),
                 'value' => pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), true),
-            ));
-            $form->addElement('multiCheckbox', Settings::CLOUDFLARE_SYNC_TYPES, array(
+            ]);
+            $form->addElement('multiCheckbox', Settings::CLOUDFLARE_SYNC_TYPES, [
                 'label' => pm_Locale::lmsg('form.selectRecord'),
                 'multiOptions' => $recordOptions,
                 'value' => $selectedRecords
-            ));
+            ]);
 
-            $form->addControlButtons(array(
+            $form->addControlButtons([
                 'sendTitle' => pm_Locale::lmsg('button.save'),
                 'cancelLink' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId()),
-            ));
+            ]);
 
-            if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+            if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost()))
+            {
                 pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_PROXY, $domain), $form->getValue(Settings::CLOUDFLARE_PROXY));
                 pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_AUTO_SYNC, $domain), $form->getValue(Settings::CLOUDFLARE_AUTO_SYNC));
-                foreach ($recordOptions as $option) {
-                    try {
+                foreach ($recordOptions as $option)
+                {
+                    try
+                    {
                         pm_Settings::set(Settings::getDomainKey('record' . $option, $domain), in_array($option, $form->getValue(Settings::CLOUDFLARE_SYNC_TYPES)));
-                    } catch (Exception $e) {
+                    }
+                    catch (Exception $e)
+                    {
                     }
                 }
                 $this->_status->addMessage('info', pm_Locale::lmsg('message.settingsSaved'));
-                $this->_helper->json(array('redirect' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId())));
+                $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'settings?site_id=' . $domain->getId())]);
             }
             $this->view->form = $form;
         }
