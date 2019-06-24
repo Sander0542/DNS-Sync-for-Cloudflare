@@ -17,20 +17,27 @@ class Modules_DnsSyncCloudflare_Util_Permissions
             $client = pm_Session::getClient();
             $domain = pm_Domain::getByDomainId($siteID);
 
-            if ($client->hasPermission(self::PERMISSIONS_MANAGE, $domain))
+            if ($client->hasAccessToDomain($domain->getId()))
             {
-                if (($client->hasPermission(self::PERMISSIONS_SETTINGS, $domain) || !$checkSettings) && ($client->hasPermission(self::PERMISSIONS_API, $domain) || !$checkAPI))
+                if ($client->hasPermission(self::PERMISSIONS_MANAGE, $domain))
                 {
-                    return $domain;
+                    if (($client->hasPermission(self::PERMISSIONS_SETTINGS, $domain) || !$checkSettings) && ($client->hasPermission(self::PERMISSIONS_API, $domain) || !$checkAPI))
+                    {
+                        return $domain;
+                    }
+                    else
+                    {
+                        return pm_Locale::lmsg('message.noAccessSettings');
+                    }
                 }
                 else
                 {
-                    return pm_Locale::lmsg('message.noAccessSettings');
+                    return pm_Locale::lmsg('message.noAccessExtension');
                 }
             }
             else
             {
-                return pm_Locale::lmsg('message.noAccessExtension');
+                return pm_Locale::lmsg('message.noDomainSelected');
             }
         }
         catch (pm_Exception $e)
