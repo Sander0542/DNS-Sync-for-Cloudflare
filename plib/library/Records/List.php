@@ -43,7 +43,7 @@ class Modules_DnsSyncCloudflare_Records_List
                     break;
             }
 
-            if ($record->cloudflareRecord instanceof CloudflareRecord)
+            if ($record->cloudflareRecord !== null)
             {
                 $cloudflareValue = $record->cloudflareRecord->content;
 

@@ -45,7 +45,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      */
     public function getStatus()
     {
-        if ($this->cloudflareRecord instanceof CloudflareRecord)
+        if ($this->cloudflareRecord !== null)
         {
             if (RecordsMatch::doRecordMatch($this->cloudflareRecord, $this->pleskRecord))
             {
@@ -117,7 +117,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
             $list[] = new self($cloudflareAuth, $pleskRecord, $cloudflareRecord);
         }
 
-        if ($removeOld === true)
+        if ($removeOld == true)
         {
             $dns = $cloudflareAuth->getDNS();
 
