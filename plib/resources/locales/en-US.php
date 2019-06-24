@@ -48,7 +48,7 @@ $messages = [
     'message.noAccessSettings' => 'You do not have access to the domain settings.',
     'message.noDomainSelected' => 'There was no domain selected.',
     'message.noRecordsEdited' => 'No records created or updated.',
-    'message.xRecordsUpdated' => '%%count%% record(s )created or updated.',
+    'message.xRecordsUpdated' => '%%count%% record(s) created or updated.',
     'message.signedInAs' => 'Signed in as %%email%%.',
 
     'permission.cloudflare.title' => 'DNS Sync for Cloudflare',
