@@ -279,7 +279,7 @@ class DomainController extends pm_Controller_Action
         $data = (new RecordList($domain, $cloudflare))->getList();
         $list = new pm_View_List_Simple($this->view, $this->_request);
         $list->setColumns([
-            pm_View_List_Simple::COLUMN_SELECTION,
+//            pm_View_List_Simple::COLUMN_SELECTION,
             'col-host' => [
                 'title' => pm_Locale::lmsg('table.host'),
                 'noEscape' => true,
