@@ -56,6 +56,15 @@ class DomainController extends pm_Controller_Action
 
                 if ($zone !== null)
                 {
+                    $this->view->syncTools = [
+                        [
+                            'title' => pm_Locale::lmsg('button.syncAll'),
+                            'description' => 'Sync all the records.',
+                            'class' => 'sb-button1',
+                            'action' => 'sync-all?site_id='.$domain->getId(),
+                        ],
+                    ];
+
                     $this->view->list = $this->_getRecordsList($domain, $cloudflare);
                 }
                 else
@@ -289,13 +298,6 @@ class DomainController extends pm_Controller_Action
             ]
         ]);
         $list->setData($data);
-        $list->setTools([
-            [
-                'title' => pm_Locale::lmsg('button.syncAll'),
-                'description' => 'Sync all the records.',
-                'action' => 'sync-all',
-            ],
-        ]);
         $list->setDataUrl(['action' => 'records-data?site_id=' . $domain->getId()]);
         return $list;
     }
