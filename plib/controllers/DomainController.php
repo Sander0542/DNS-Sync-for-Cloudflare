@@ -108,7 +108,7 @@ class DomainController extends pm_Controller_Action
         //Set the active tab
         $this->view->tabs[1]['active'] = true;
 
-        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"), true);
 
         if ($access instanceof pm_Domain)
         {
@@ -174,7 +174,7 @@ class DomainController extends pm_Controller_Action
         //Set the active tab
         $this->view->tabs[2]['active'] = true;
 
-        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"));
+        $access = Permissions::checkAccess($this->getRequest()->getParam("site_id"), false, true);
 
         if ($access instanceof pm_Domain)
         {
