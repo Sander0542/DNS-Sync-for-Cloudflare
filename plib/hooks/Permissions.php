@@ -1,5 +1,7 @@
 <?php
 
+use Modules_DnsSyncCloudflare_Util_Permissions as PermissionsUtil;
+
 class Modules_DnsSyncCloudflare_Permissions extends pm_Hook_Permissions
 {
     /**
@@ -8,25 +10,25 @@ class Modules_DnsSyncCloudflare_Permissions extends pm_Hook_Permissions
     public function getPermissions()
     {
         return [
-            'manage_cloudflare' => [
+            PermissionsUtil::PERMISSIONS_MANAGE => [
                 'default' => true,
                 'place' => self::PLACE_MAIN,
                 'name' => pm_Locale::lmsg('permission.cloudflare.title'),
                 'description' => pm_Locale::lmsg('permission.cloudflare.description'),
             ],
-            'manage_cloudflare_settings' => [
+            PermissionsUtil::PERMISSIONS_SETTINGS => [
                 'default' => true,
                 'place' => self::PLACE_MAIN,
                 'name' => pm_Locale::lmsg('permission.cloudflareSettings.title'),
                 'description' => pm_Locale::lmsg('permission.cloudflareSettings.description'),
-                'master' => 'manage_cloudflare',
+                'master' => PermissionsUtil::PERMISSIONS_MANAGE,
             ],
-            'manage_cloudflare_api' => [
+            PermissionsUtil::PERMISSIONS_API => [
                 'default' => true,
                 'place' => self::PLACE_MAIN,
                 'name' => pm_Locale::lmsg('permission.cloudflareApi.title'),
                 'description' => pm_Locale::lmsg('permission.cloudflareApi.description'),
-                'master' => 'manage_cloudflare',
+                'master' => PermissionsUtil::PERMISSIONS_MANAGE,
             ],
         ];
     }
