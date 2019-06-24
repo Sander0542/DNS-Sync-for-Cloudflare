@@ -22,7 +22,7 @@ class Modules_DnsSyncCloudflare_Permissions extends pm_Hook_Permissions
                 'master' => 'manage_cloudflare',
             ],
             'manage_cloudflare_api' => [
-                'default' => false,
+                'default' => true,
                 'place' => self::PLACE_MAIN,
                 'name' => pm_Locale::lmsg('permission.cloudflareApi.title'),
                 'description' => pm_Locale::lmsg('permission.cloudflareApi.description'),
