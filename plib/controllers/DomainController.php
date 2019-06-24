@@ -262,7 +262,7 @@ class DomainController extends pm_Controller_Action
 
                 foreach ($records as $record)
                 {
-                    if (Settings::syncRecordType($record->pleskRecord->type, $domain)) $successCount += $record->syncRecord() ? 1 : 0;
+                    $successCount += $record->syncRecord() ? 1 : 0;
                 }
 
                 $this->_status->addMessage($successCount > 0 ? 'info' : 'warning', pm_Locale::lmsg('message.xRecordsUpdated', ['count' => $successCount]));

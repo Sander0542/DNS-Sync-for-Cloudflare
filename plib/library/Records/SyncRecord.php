@@ -6,6 +6,7 @@ use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
 use Modules_DnsSyncCloudflare_Records_Match as RecordsMatch;
 use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
 use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class Modules_DnsSyncCloudflare_Records_SyncRecord
 {
@@ -63,30 +64,35 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
     /**
      * @return bool
      */
-    public function syncRecord()
+    public function syncRecord($checkSync = true)
     {
         $dns = $this->cloudflareAuth->getDNS();
 
-        $zoneID = $this->cloudflareAuth->getZone(pm_Domain::getByDomainId($this->pleskRecord->siteId))->id;
-        
+        $domain = pm_Domain::getByDomainId($this->pleskRecord->siteId);
+
+        $zoneID = $this->cloudflareAuth->getZone($domain)->id;
+
         $updateRecord = CloudflareRecord::fromPleskRecord($this->pleskRecord);
 
-        switch ($this->getStatus())
+        if (Settings::syncRecordType($this->pleskRecord->type, $domain) || !$checkSync)
         {
-            case self::STATUS_RECORD:
-                // The current record can be updated
-                $dns->updateRecordDetails($zoneID, $this->cloudflareRecord->id, [
-                    'type' => $updateRecord->type,
-                    'name' => $updateRecord->name,
-                    'content' => $updateRecord->content,
-                    'proxied' => $updateRecord->proxied,
-                    'priority' => $updateRecord->priority
-                ]);
+            switch ($this->getStatus())
+            {
+                case self::STATUS_RECORD:
+                    // The current record can be updated
+                    $dns->updateRecordDetails($zoneID, $this->cloudflareRecord->id, [
+                        'type' => $updateRecord->type,
+                        'name' => $updateRecord->name,
+                        'content' => $updateRecord->content,
+                        'proxied' => $updateRecord->proxied,
+                        'priority' => $updateRecord->priority
+                    ]);
 
-                return true;
-            case self::STATUS_NONE:
-                // Create a new record in Cloudflare
-                return $dns->addRecord($zoneID, $updateRecord->type, $updateRecord->name, $updateRecord->content,0, $updateRecord->proxied, $updateRecord->priority);
+                    return true;
+                case self::STATUS_NONE:
+                    // Create a new record in Cloudflare
+                    return $dns->addRecord($zoneID, $updateRecord->type, $updateRecord->name, $updateRecord->content, 0, $updateRecord->proxied, $updateRecord->priority);
+            }
         }
 
         return false;
