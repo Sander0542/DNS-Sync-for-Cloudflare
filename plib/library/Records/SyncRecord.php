@@ -45,7 +45,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      */
     public function getStatus()
     {
-        if ($this->cloudflareRecord !== null)
+        if ($this->cloudflareRecord instanceof CloudflareRecord)
         {
             if (RecordsMatch::doRecordMatch($this->cloudflareRecord, $this->pleskRecord))
             {

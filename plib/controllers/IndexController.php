@@ -53,14 +53,14 @@ class IndexController extends pm_Controller_Action
         {
             $cloudflareID = pm_Locale::lmsg('text.zoneIdNotFound');
 
-            $auth = CloudflareAuth::login($domain);
+            $cloudflare = CloudflareAuth::login($domain);
 
-            if ($auth !== null)
+            if ($cloudflare instanceof CloudflareAuth)
             {
                 /**
                  * @var $zone CloudflareRecord
                  */
-                $zone = $auth->getZone($domain);
+                $zone = $cloudflare->getZone($domain);
                 if ($zone !== null)
                 {
                     $cloudflareID = $zone->id;

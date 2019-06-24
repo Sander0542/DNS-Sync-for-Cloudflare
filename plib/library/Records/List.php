@@ -3,6 +3,7 @@
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
 use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
 use Modules_DnsSyncCloudflare_Records_SyncRecord as SyncRecord;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 
 class Modules_DnsSyncCloudflare_Records_List
 {
@@ -42,7 +43,7 @@ class Modules_DnsSyncCloudflare_Records_List
                     break;
             }
 
-            if ($record->cloudflareRecord !== null)
+            if ($record->cloudflareRecord instanceof CloudflareRecord)
             {
                 $cloudflareValue = $record->cloudflareRecord->content;
 

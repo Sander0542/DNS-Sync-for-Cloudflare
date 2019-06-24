@@ -50,7 +50,7 @@ class DomainController extends pm_Controller_Action
 
             $cloudflare = CloudflareAuth::login($domain);
 
-            if ($cloudflare !== null)
+            if ($cloudflare instanceof CloudflareAuth)
             {
                 $zone = $cloudflare->getZone($domain);
 
@@ -94,7 +94,7 @@ class DomainController extends pm_Controller_Action
 
             $cloudflare = CloudflareAuth::login($domain);
 
-            if ($cloudflare !== null)
+            if ($cloudflare instanceof CloudflareAuth)
             {
                 $list = $this->_getRecordsList($domain, $cloudflare);
                 // Json data from pm_View_List_Simple
@@ -184,7 +184,7 @@ class DomainController extends pm_Controller_Action
 
             $cloudflare = CloudflareAuth::login($domain);
 
-            if ($cloudflare !== null)
+            if ($cloudflare instanceof CloudflareAuth)
             {
                 $this->_status->addMessage('info', pm_Locale::lmsg('message.signedInAs', (array)$cloudflare->getUser()->getUserDetails()));
             }
@@ -252,7 +252,7 @@ class DomainController extends pm_Controller_Action
 
             $cloudflare = CloudflareAuth::login($domain);
 
-            if ($cloudflare !== null)
+            if ($cloudflare instanceof CloudflareAuth)
             {
                 $removeOld = pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), true);
 
