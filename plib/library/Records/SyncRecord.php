@@ -52,14 +52,24 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      */
     public function getStatus()
     {
-        if ($this->cloudflareRecord !== null)
+        if ($this->pleskRecord !== null)
         {
-            if (RecordsMatch::doRecordMatch($this->cloudflareRecord, $this->pleskRecord))
+            if ($this->cloudflareRecord !== null)
             {
-                if (RecordsMatch::doValueMatch($this->cloudflareRecord, $this->pleskRecord))
+                if (RecordsMatch::doRecordMatch($this->cloudflareRecord, $this->pleskRecord))
                 {
-                    return self::STATUS_SYNCED;
+                    if (RecordsMatch::doValueMatch($this->cloudflareRecord, $this->pleskRecord))
+                    {
+                        return self::STATUS_SYNCED;
+                    }
+
+                    return self::STATUS_RECORD;
                 }
+            }
+            return self::STATUS_NONE;
+        }
+
+        return self::STATUS_REMOVE;
 
                 return self::STATUS_RECORD;
             }
