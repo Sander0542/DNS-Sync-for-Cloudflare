@@ -254,9 +254,7 @@ class DomainController extends pm_Controller_Action
 
             if ($cloudflare instanceof CloudflareAuth)
             {
-                $removeOld = pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), true);
-
-                $records = SyncRecord::getRecords($domain, $cloudflare, $removeOld);
+                $records = SyncRecord::getRecords($domain, $cloudflare);
 
                 $successCount = 0;
 

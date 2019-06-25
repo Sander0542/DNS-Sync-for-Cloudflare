@@ -38,9 +38,7 @@ class Modules_DnsSyncCloudflare_EventListener implements EventListener
 
                         if ($cloudflare instanceof CloudflareAuth)
                         {
-                            $removeOld = pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $domain), true);
-
-                            $records = SyncRecord::getRecords($domain, $cloudflare, $removeOld);
+                            $records = SyncRecord::getRecords($domain, $cloudflare);
 
                             foreach ($records as $record)
                             {
