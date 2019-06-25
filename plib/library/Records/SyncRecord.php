@@ -70,6 +70,21 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
         }
 
         return self::STATUS_REMOVE;
+    }
+
+    public function getRecordName()
+    {
+        if ($this->pleskRecord !== null)
+        {
+            return PleskDNS::removeDotAfterTLD($this->pleskRecord->host);
+        }
+
+        if ($this->cloudflareRecord !== null)
+        {
+            return $this->cloudflareRecord->name;
+        }
+
+        return null;
 
                 return self::STATUS_RECORD;
             }
