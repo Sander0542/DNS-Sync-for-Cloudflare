@@ -85,12 +85,29 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
         }
 
         return null;
+    }
 
-                return self::STATUS_RECORD;
+    public function getRecordType($pretify = true)
+    {
+        if ($this->pleskRecord !== null)
+        {
+            if ($this->pleskRecord->type == 'MX' && $pretify)
+            {
+                return 'MX ('.$this->pleskRecord->opt.')';
             }
+            return $this->pleskRecord->type;
         }
 
-        return self::STATUS_NONE;
+        if ($this->cloudflareRecord !== null)
+        {
+            if ($this->cloudflareRecord->type == 'MX' && $pretify)
+            {
+                return 'MX ('.$this->cloudflareRecord->priority.')';
+            }
+            return $this->cloudflareRecord->type;
+        }
+
+        return null;
     }
 
     /**
