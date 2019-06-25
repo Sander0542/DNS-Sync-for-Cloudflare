@@ -1,8 +1,10 @@
 <?php
 
 use PleskX\Api\Struct\Dns\Info as PleskRecord;
+
 use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class Modules_DnsSyncCloudflare_Records_Match
 {
@@ -69,12 +71,16 @@ class Modules_DnsSyncCloudflare_Records_Match
                 {
                     case 'A';
                     case 'AAAA';
-                    case 'CNAME';
+                    case 'CNAME':
+                        if ($cloudflareRecord->proxied == pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_PROXY, pm_Domain::getByDomainId($pleskRecord->siteId)), true))
+                        {
+                            return self::matchValue($cloudflareRecord, $pleskRecord);
+                        }
+                        return false;
                     case 'NS':
                     case 'MX':
                     case 'TXT':
                         return self::matchValue($cloudflareRecord, $pleskRecord);
-
                 }
             }
         }
