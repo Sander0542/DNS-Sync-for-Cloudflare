@@ -157,7 +157,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      * @param bool $removeOld
      * @return self[]
      */
-    public static function getRecords(pm_Domain $domain, CloudflareAuth $cloudflareAuth, $removeOld = false)
+    public static function getRecords(pm_Domain $domain, CloudflareAuth $cloudflareAuth)
     {
         $list = [];
 
@@ -167,19 +167,12 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
         {
             $cloudflareRecord = RecordsMatch::getCloudflareRecord($cloudflareRecords, $pleskRecord);
 
-            $list[] = new self($cloudflareAuth, $pleskRecord, $cloudflareRecord);
+            $list[] = new self($cloudflareAuth, $domain, $pleskRecord, $cloudflareRecord);
         }
 
-        if ($removeOld == true)
+        foreach ($cloudflareRecords as $cloudflareRecord)
         {
-            $dns = $cloudflareAuth->getDNS();
-
-            $zoneID = $cloudflareAuth->getZone($domain)->id;
-
-            foreach ($cloudflareRecords as $cloudflareRecord)
-            {
-                $dns->deleteRecord($zoneID, $cloudflareRecord->id);
-            }
+            $list[] = new self($cloudflareAuth, $domain, null, $cloudflareRecord);
         }
 
         return $list;
