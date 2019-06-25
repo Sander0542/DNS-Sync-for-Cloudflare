@@ -185,9 +185,17 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      */
     public static function getRecord(PleskRecord $pleskRecord, CloudflareAuth $cloudflareAuth)
     {
-        $cloudflareRecords = $cloudflareAuth->getRecords(pm_Domain::getByDomainId($pleskRecord->siteId));
-        $cloudflareRecord = RecordsMatch::getCloudflareRecord($cloudflareRecords, $pleskRecord);
+        try
+        {
+            $domain = pm_Domain::getByDomainId($pleskRecord->siteId);
+            $cloudflareRecords = $cloudflareAuth->getRecords($domain);
+            $cloudflareRecord = RecordsMatch::getCloudflareRecord($cloudflareRecords, $pleskRecord);
+        }
+        catch (pm_Exception $exception)
+        {
+            $cloudflareRecord = null;
+        }
 
-        return new self($cloudflareAuth, $pleskRecord, $cloudflareRecord);
+        return new self($cloudflareAuth, $domain, $pleskRecord, $cloudflareRecord);
     }
 }
