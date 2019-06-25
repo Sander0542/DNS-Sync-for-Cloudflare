@@ -27,9 +27,12 @@ class Modules_DnsSyncCloudflare_Records_List
 
         foreach ($records as $record)
         {
+            //Set the default values
             $cloudflareValue = pm_Locale::lmsg('text.recordNotFound');
-            $pleskValue = $record->pleskRecord->value;
+            $pleskValue = pm_Locale::lmsg('text.recordNotFound');
+            $syncStatus = pm_Context::getBaseUrl() . 'images/error.png';
 
+            //Check the status
             switch ($record->getStatus())
             {
                 case SyncRecord::STATUS_SYNCED:
@@ -38,8 +41,8 @@ class Modules_DnsSyncCloudflare_Records_List
                 case SyncRecord::STATUS_RECORD:
                     $syncStatus = pm_Context::getBaseUrl() . 'images/warning.png';
                     break;
-                default:
-                    $syncStatus = pm_Context::getBaseUrl() . 'images/error.png';
+                case SyncRecord::STATUS_REMOVE:
+                    $syncStatus = pm_Context::getBaseUrl() . 'images/error2.png';
                     break;
             }
 
@@ -47,16 +50,19 @@ class Modules_DnsSyncCloudflare_Records_List
             {
                 $cloudflareValue = $record->cloudflareRecord->content;
 
-                if ($record->pleskRecord->type == 'SRV')
-                {
-                    $cloudflareValue = $record->cloudflareRecord->priority . ' ' . str_replace("\t", ' ', $record->cloudflareRecord->content);
-                    $pleskValue = $record->pleskRecord->opt . ' ' . $record->pleskRecord->value;
-                }
+                if ($record->cloudflareRecord->type == 'SRV') $cloudflareValue = $record->cloudflareRecord->priority . ' ' . str_replace("\t", ' ', $record->cloudflareRecord->content);
+            }
+
+            if ($record->pleskRecord !== null)
+            {
+                $pleskValue = $record->pleskRecord->value;
+
+                if ($record->pleskRecord->type == 'SRV') $pleskValue = $record->pleskRecord->opt . ' ' . $record->pleskRecord->value;
             }
 
             $data[] = [
-                'col-host' => PleskDNS::removeDotAfterTLD($record->pleskRecord->host),
-                'col-type' => $record->pleskRecord->type . ($record->pleskRecord->type == 'MX' ? ' (' . $record->pleskRecord->opt . ')' : ''),
+                'col-host' => $record->getRecordName(),
+                'col-type' => $record->getRecordType(),
                 'col-status' => '<img src="' . $syncStatus . '"/>',
                 'col-plesk' => $this->minifyValue($pleskValue),
                 'col-cloudflare' => $this->minifyValue($cloudflareValue),
