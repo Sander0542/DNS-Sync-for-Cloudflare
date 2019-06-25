@@ -12,31 +12,38 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
 {
     const STATUS_SYNCED = 1;
     const STATUS_RECORD = 2;
-    const STATUS_NONE = 3;
+    const STATUS_REMOVE = 3;
+    const STATUS_NONE = 4;
 
     /**
-     * @var PleskRecord
+     * @var CloudflareAuth
      */
-    public $pleskRecord;
+    public $cloudflareAuth;
+    /**
+     * @var pm_Domain
+     */
+    public $domain = null;
+    /**
+     * @var PleskRecord|null
+     */
+    public $pleskRecord = null;
     /**
      * @var CloudflareRecord|null
      */
     public $cloudflareRecord = null;
-    /**
-     * @var CloudflareAuth|null
-     */
-    public $cloudflareAuth = null;
 
     /**
      * Modules_DnsSyncCloudflare_Records_SyncRecord constructor.
      * @param CloudflareAuth $cloudflareAuth
+     * @param pm_Domain $domain
      * @param PleskRecord $pleskRecord
      * @param null $cloudflareRecord
      */
-    private function __construct(CloudflareAuth $cloudflareAuth, PleskRecord $pleskRecord, $cloudflareRecord = null)
+    private function __construct(CloudflareAuth $cloudflareAuth, pm_Domain $domain, PleskRecord $pleskRecord = null, $cloudflareRecord = null)
     {
-        $this->pleskRecord = $pleskRecord;
+        $this->domain = $domain;
         $this->cloudflareAuth = $cloudflareAuth;
+        $this->pleskRecord = $pleskRecord;
         $this->cloudflareRecord = $cloudflareRecord;
     }
 
