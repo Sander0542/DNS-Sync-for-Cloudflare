@@ -117,17 +117,14 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
     {
         $dns = $this->cloudflareAuth->getDNS();
 
-        $domain = pm_Domain::getByDomainId($this->pleskRecord->siteId);
+        $zoneID = $this->cloudflareAuth->getZone($this->domain)->id;
 
-        $zoneID = $this->cloudflareAuth->getZone($domain)->id;
-
-        $updateRecord = CloudflareRecord::fromPleskRecord($this->pleskRecord);
-
-        if (Settings::syncRecordType($this->pleskRecord->type, $domain) || !$checkSync)
+        if (Settings::syncRecordType($this->getRecordType(false), $this->domain) || !$checkSync)
         {
             switch ($this->getStatus())
             {
                 case self::STATUS_RECORD:
+                    $updateRecord = CloudflareRecord::fromPleskRecord($this->pleskRecord);
                     // The current record can be updated
                     $dns->updateRecordDetails($zoneID, $this->cloudflareRecord->id, [
                         'type' => $updateRecord->type,
@@ -139,8 +136,15 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
 
                     return true;
                 case self::STATUS_NONE:
+                    $updateRecord = CloudflareRecord::fromPleskRecord($this->pleskRecord);
                     // Create a new record in Cloudflare
                     return $dns->addRecord($zoneID, $updateRecord->type, $updateRecord->name, $updateRecord->content, 0, $updateRecord->proxied, $updateRecord->priority);
+                case self::STATUS_REMOVE:
+                    if (pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $this->domain), true)) {
+                        // Remove the record from Cloudflare
+                        return $dns->deleteRecord($zoneID, $this->cloudflareRecord->id);
+                    }
+                    break;
             }
         }
 
