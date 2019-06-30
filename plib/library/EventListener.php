@@ -55,3 +55,5 @@ class Modules_DnsSyncCloudflare_EventListener implements EventListener
         }
     }
 }
+
+return new Modules_DnsSyncCloudflare_EventListener();
