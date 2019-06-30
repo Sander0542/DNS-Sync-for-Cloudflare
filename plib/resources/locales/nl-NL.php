@@ -49,4 +49,7 @@ $messages = [
     'message.noRecordsEdited' => 'Geen records gemaakt of geupdate.',
     'message.xRecordsUpdated' => '%%count%% record(s) gemaakt of geupdate.',
     'message.signedInAs' => 'Ingelogd als %%email%%.',
+
+    'task.sync.running' => 'Plesk DNS synchroniseren met Cloudflare DNS',
+    'task.sync.done' => 'Gesynchroniseerde Plesk DNS naar Cloudflare DNS Records Gecreëerd: %%createdCount%% Records Bijgewerkt: %%updatedCount%% Records verwijderd: %%deletedCount%%',
 ];
