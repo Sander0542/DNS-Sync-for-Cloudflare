@@ -2,7 +2,7 @@
 
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
 use Modules_DnsSyncCloudflare_Records_List as RecordList;
-use Modules_DnsSyncCloudflare_Records_SyncRecord as SyncRecord;
+use Modules_DnsSyncCloudflare_Task_Sync as SyncTask;
 use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 use Modules_DnsSyncCloudflare_Util_Permissions as Permissions;
 use Modules_DnsSyncCloudflare_Util_Records as RecordsUtil;
@@ -250,21 +250,11 @@ class DomainController extends pm_Controller_Action
         {
             $domain = $access;
 
-            $cloudflare = CloudflareAuth::login($domain);
+            $taskManager = new pm_LongTask_Manager();
 
-            if ($cloudflare instanceof CloudflareAuth)
-            {
-                $records = SyncRecord::getRecords($domain, $cloudflare);
-
-                $successCount = 0;
-
-                foreach ($records as $record)
-                {
-                    $successCount += $record->syncRecord() ? 1 : 0;
-                }
-
-                $this->_status->addMessage($successCount > 0 ? 'info' : 'warning', pm_Locale::lmsg('message.xRecordsUpdated', ['count' => $successCount]));
-            }
+            $task = new SyncTask();
+            $task->setParam('site_id', $siteID);
+            $taskManager->start($task);
         }
 
         $this->redirect('domain/records?site_id='.$siteID);
