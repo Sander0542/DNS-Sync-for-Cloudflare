@@ -275,7 +275,11 @@ class DomainController extends pm_Controller_Action
     private function _getRecordsList(pm_Domain $domain, $cloudflare)
     {
         $data = (new RecordList($domain, $cloudflare))->getList();
-        $list = new pm_View_List_Simple($this->view, $this->_request);
+        $options = [
+            'defaultSortField' => 'col-type',
+            'defaultSortDirection' => 'ASC',
+        ];
+        $list = new pm_View_List_Simple($this->view, $this->_request, $options);
         $list->setColumns([
 //            pm_View_List_Simple::COLUMN_SELECTION,
             'col-host' => [
