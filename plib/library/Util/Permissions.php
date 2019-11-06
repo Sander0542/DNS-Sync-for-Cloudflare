@@ -8,6 +8,8 @@ class Modules_DnsSyncCloudflare_Util_Permissions
 
     /**
      * @param $siteID
+     * @param bool $checkSettings
+     * @param bool $checkAPI
      * @return string|pm_Domain
      */
     public static function checkAccess($siteID, $checkSettings = false, $checkAPI = false)
