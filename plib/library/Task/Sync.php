@@ -7,6 +7,8 @@ class Modules_DnsSyncCloudflare_Task_Sync extends pm_LongTask_Task
 {
     public $trackProgress = true;
 
+    public $hasDangerousMessage = true;
+
     public function run()
     {
         try
@@ -41,7 +43,7 @@ class Modules_DnsSyncCloudflare_Task_Sync extends pm_LongTask_Task
         }
         catch (pm_Exception $exception)
         {
-            $this->hasDangerousMessage = true;
+            
         }
     }
 

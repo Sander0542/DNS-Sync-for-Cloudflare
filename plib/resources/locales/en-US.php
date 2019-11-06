@@ -57,5 +57,5 @@ $messages = [
     'permission.cloudflareSettings.description' => 'Allow customers to change the settings of DNS Sync for Cloudflare',
 
     'task.sync.running' => 'Syncing Plesk DNS to Cloudflare DNS',
-    'task.sync.done' => 'Synced Plesk DNS to Cloudflare DNSRecords Created: %%createdCount%%Records Updated: %%updatedCount%%Records Deleted: %%deletedCount%%',
+    'task.sync.done' => 'Synced Plesk DNS to Cloudflare DNS <br/><br/>Records Created: %%createdCount%% <br/>Records Updated: %%updatedCount%% <br/>Records Deleted: %%deletedCount%%',
 ];
