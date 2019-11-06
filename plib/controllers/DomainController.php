@@ -61,7 +61,7 @@ class DomainController extends pm_Controller_Action
                             'title' => pm_Locale::lmsg('button.syncAll'),
                             'description' => 'Sync all the records.',
                             'class' => 'sb-button1',
-                            'action' => 'sync-all?site_id='.$domain->getId(),
+                            'action' => 'sync-all?site_id=' . $domain->getId(),
                         ],
                     ];
 
@@ -267,7 +267,7 @@ class DomainController extends pm_Controller_Action
             }
         }
 
-        $this->redirect('domain/records?site_id='.$siteID);
+        $this->redirect('domain/records?site_id=' . $siteID);
 
 //        $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $siteID)]);
     }
