@@ -19,17 +19,21 @@ class Modules_DnsSyncCloudflare_Task_Sync extends pm_LongTask_Task
 
             if ($cloudflare instanceof CloudflareAuth)
             {
+                $this->updateProgress(0);
+
                 $records = SyncRecord::getRecords($domain, $cloudflare);
 
                 $createdCount = 0;
                 $updatedCount = 0;
                 $deletedCount = 0;
 
+                $done = 0;
+
                 foreach ($records as $record)
                 {
                     $record->syncRecord($createdCount, $updatedCount, $deletedCount);
 
-                    $done = $createdCount + $updatedCount + $deletedCount;
+                    $done++;
 
                     $progress = 100 / count($records) * $done;
 
