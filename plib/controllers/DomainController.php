@@ -286,11 +286,9 @@ class DomainController extends pm_Controller_Action
 //            pm_View_List_Simple::COLUMN_SELECTION,
             'col-host' => [
                 'title' => pm_Locale::lmsg('table.host'),
-                'noEscape' => true,
             ],
             'col-type' => [
                 'title' => pm_Locale::lmsg('table.recordType'),
-                'noEscape' => true,
             ],
             'col-status' => [
                 'title' => pm_Locale::lmsg('table.status'),
@@ -298,16 +296,14 @@ class DomainController extends pm_Controller_Action
             ],
             'col-plesk' => [
                 'title' => pm_Locale::lmsg('table.pleskValue'),
-                'noEscape' => true,
             ],
             'col-cloudflare' => [
                 'title' => pm_Locale::lmsg('table.cloudflareValue'),
-                'noEscape' => true,
             ]
         ]);
         $list->setData($data);
         $list->setDataUrl(['action' => 'records-data?site_id=' . $domain->getId()]);
-        
+
         return $list;
     }
 }
