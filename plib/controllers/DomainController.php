@@ -248,8 +248,6 @@ class DomainController extends pm_Controller_Action
 
         if ($access instanceof pm_Domain)
         {
-            $domain = $access;
-
             $taskManager = new pm_LongTask_Manager();
 
             $task = new SyncTask();
