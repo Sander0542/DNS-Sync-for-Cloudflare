@@ -1,29 +1,20 @@
 <?php
 
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
-use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
 use Modules_DnsSyncCloudflare_Records_SyncRecord as SyncRecord;
-use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 
 class Modules_DnsSyncCloudflare_Records_List
 {
-    private $domain;
-    private $cloudflareAuth;
-
-    public function __construct(pm_Domain $domain, CloudflareAuth $cloudflareAuth)
-    {
-        $this->domain = $domain;
-        $this->cloudflareAuth = $cloudflareAuth;
-    }
-
     /**
+     * @param pm_Domain $domain
+     * @param CloudflareAuth $cloudflareAuth
      * @return array
      */
-    public function getList()
+    public static function getList(pm_Domain $domain, CloudflareAuth $cloudflareAuth)
     {
         $data = [];
 
-        $records = SyncRecord::getRecords($this->domain, $this->cloudflareAuth);
+        $records = SyncRecord::getRecords($domain, $cloudflareAuth);
 
         foreach ($records as $record)
         {
@@ -64,15 +55,15 @@ class Modules_DnsSyncCloudflare_Records_List
                 'col-host' => $record->getRecordName(),
                 'col-type' => $record->getRecordType(),
                 'col-status' => '<img src="' . $syncStatus . '"/>',
-                'col-plesk' => $this->minifyValue($pleskValue),
-                'col-cloudflare' => $this->minifyValue($cloudflareValue),
+                'col-plesk' => self::minifyValue($pleskValue),
+                'col-cloudflare' => self::minifyValue($cloudflareValue),
             ];
         }
 
         return $data;
     }
 
-    private function minifyValue($value, $length = 60)
+    private static function minifyValue($value, $length = 60)
     {
         if (strlen($value) > $length)
         {

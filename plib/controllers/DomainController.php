@@ -274,11 +274,13 @@ class DomainController extends pm_Controller_Action
 
     private function _getRecordsList(pm_Domain $domain, $cloudflare)
     {
-        $data = (new RecordList($domain, $cloudflare))->getList();
         $options = [
             'defaultSortField' => 'col-type',
             'defaultSortDirection' => 'ASC',
         ];
+
+        $data = RecordList::getList($domain, $cloudflare);
+
         $list = new pm_View_List_Simple($this->view, $this->_request, $options);
         $list->setColumns([
 //            pm_View_List_Simple::COLUMN_SELECTION,
@@ -305,6 +307,7 @@ class DomainController extends pm_Controller_Action
         ]);
         $list->setData($data);
         $list->setDataUrl(['action' => 'records-data?site_id=' . $domain->getId()]);
+        
         return $list;
     }
 }
