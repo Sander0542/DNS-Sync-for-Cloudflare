@@ -45,8 +45,8 @@ class Modules_DnsSyncCloudflare_Records_Match
                     case 'AAAA';
                     case 'CNAME';
                     case 'SRV':
-                    case 'TXT':
                         return true;
+                    case 'TXT':
                     case 'NS':
                         return self::matchValue($cloudflareRecord, $pleskRecord);
                     case 'MX':
