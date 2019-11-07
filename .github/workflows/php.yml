@@ -1,6 +1,6 @@
 name: PHP Composer
 
-on: [release]
+on: [release,push]
 
 jobs:
   build:
