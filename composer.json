@@ -1,8 +1,27 @@
 {
+  "name": "Sander0542/PleskDNSSync",
+  "description": "Sync the Plesk DNS to Cloudflare DNS",
+  "keywords": [
+    "plesk",
+    "cloudflare",
+    "dns",
+    "sync",
+    "api"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sander Jochems",
+      "email": "contact@sanderjochems.com",
+      "homepage": "https://www.sanderjochems.com",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://github.com/Sander0542/DNS-Sync-for-Cloudflare",
   "config": {
     "vendor-dir": "plib/vendor"
   },
-  "autoload":{
+  "autoload": {
     "psr-0": {
       "Composer_": [
         "modules/dns-sync-cloudflare/library/",
@@ -10,10 +29,10 @@
       ]
     },
     "psr-4": {
-        "PleskExt\\Composer\\": [
-            "modules/dns-sync-cloudflare/library/Composer/",
-            "plib/library/Composer/"
-        ]
+      "PleskExt\\Composer\\": [
+        "modules/dns-sync-cloudflare/library/Composer/",
+        "plib/library/Composer/"
+      ]
     }
   },
   "require-dev": {
