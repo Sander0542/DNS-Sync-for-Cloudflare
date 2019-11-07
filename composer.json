@@ -1,5 +1,5 @@
 {
-  "name": "Sander0542/PleskDNSSync",
+  "name": "sander0542/plesk-dns-sync",
   "description": "Sync the Plesk DNS to Cloudflare DNS",
   "keywords": [
     "plesk",
