@@ -4,6 +4,10 @@ function bump_version($version)
 {
     $metaFile = __DIR__ . '/../meta.xml';
 
+    if (substr($version,0,1) == 'v') {
+        $version = substr($version, 1, strlen($version) - 1);
+    }
+
     $dom = new DOMDocument();
     $dom->load($metaFile);
 
