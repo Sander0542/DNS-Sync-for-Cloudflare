@@ -15,7 +15,23 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest --no-dev
-      
-    - name: Update Version
+
+  publish:
+    if: github.event == 'release'
+    needs: build
+
+    steps:
+    - name: Update version
       run: php -r "require 'scripts/bump_version.php'; bump_version('$GITHUB_REF');"
-      
+
+    - name: Commit version
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Update Version" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
