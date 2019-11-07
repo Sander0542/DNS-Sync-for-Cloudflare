@@ -1,0 +1,21 @@
+name: PHP Composer
+
+on: [release]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-dev
+      
+    - name: Update Version
+      run: php -r "require scripts/bump_version.php; bump_version('${{GITHUB_REF}}'):"
+      
