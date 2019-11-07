@@ -22,6 +22,5 @@ function bump_version($version)
         throw new Exception("Could not update meta.xml");
     }
 
-    echo "Version set to {$version}";
-    echo "Release set to {$release}";
+    echo "Version set to '{$version}' and release set to '{$release}'";
 }
