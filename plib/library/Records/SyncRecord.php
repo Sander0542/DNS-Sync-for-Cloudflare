@@ -93,7 +93,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
         {
             if ($this->pleskRecord->type == 'MX' && $pretify)
             {
-                return 'MX ('.$this->pleskRecord->opt.')';
+                return 'MX (' . $this->pleskRecord->opt . ')';
             }
             return $this->pleskRecord->type;
         }
@@ -102,7 +102,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
         {
             if ($this->cloudflareRecord->type == 'MX' && $pretify)
             {
-                return 'MX ('.$this->cloudflareRecord->priority.')';
+                return 'MX (' . $this->cloudflareRecord->priority . ')';
             }
             return $this->cloudflareRecord->type;
         }
@@ -140,7 +140,8 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
                     // Create a new record in Cloudflare
                     return $dns->addRecord($zoneID, $updateRecord->type, $updateRecord->name, $updateRecord->content, 0, $updateRecord->proxied, $updateRecord->priority);
                 case self::STATUS_REMOVE:
-                    if (pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $this->domain), true)) {
+                    if (pm_Settings::get(Settings::getDomainKey(Settings::CLOUDFLARE_REMOVE_UNUSED, $this->domain), true))
+                    {
                         // Remove the record from Cloudflare
                         return $dns->deleteRecord($zoneID, $this->cloudflareRecord->id);
                     }
