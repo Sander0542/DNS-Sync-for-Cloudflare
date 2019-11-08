@@ -27,7 +27,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Record
     public static function fromPleskRecord(PleskRecord $pleskRecord)
     {
         $record = new self();
-        
+
         $record->type = $pleskRecord->type;
         $record->name = $pleskRecord->host;
 
