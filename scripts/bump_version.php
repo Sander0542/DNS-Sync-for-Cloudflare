@@ -53,6 +53,8 @@ function bump_version()
         $release--;
     }
 
+    $preRelease = $versionSem->isLessThan(parse('1.0.0'));
+
     $versionElm->textContent = $version;
     $releaseElm->textContent = $release;
 
@@ -64,6 +66,7 @@ function bump_version()
     print_line("::set-output name=version::v" . $version);
     print_line("::set-output name=ext_version::" . $version);
     print_line("::set-output name=ext_release::" . $release);
+    print_line("::set-output name=pre_release::" . ($preRelease ? 'true' : 'false'));
     print_line("::set-output name=push::" . ($push ? 'true' : 'false'));
 }
 

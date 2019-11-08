@@ -48,12 +48,14 @@ jobs:
           VERSION: ${{ steps.update_version.outputs.version }}
           EXT_VERSION: ${{ steps.update_version.outputs.ext_version }}
           EXT_RELEASE: ${{ steps.update_version.outputs.ext_release }}
+          PRE_RELEASE: ${{ steps.update_version.outputs.pre_release }}
           COMMIT_HASH: ${{ steps.commit_version.outputs.commit_hash }}
         run: |
           cat > build-outputs.txt << EOL
           $VERSION
           $EXT_VERSION
           $EXT_RELEASE
+          $PRE_RELEASE
           $COMMIT_HASH
           EOL
 
@@ -82,7 +84,8 @@ jobs:
           echo "::set-output name=version::$(sed -n '1p' < outputs/build-outputs.txt)"
           echo "::set-output name=ext_version::$(sed -n '2p' < outputs/build-outputs.txt)"
           echo "::set-output name=ext_release::$(sed -n '3p' < outputs/build-outputs.txt)"
-          echo "::set-output name=commit_hash::$(sed -n '4p' < outputs/build-outputs.txt)"
+          echo "::set-output name=pre_release::$(sed -n '4p' < outputs/build-outputs.txt)"
+          echo "::set-output name=commit_hash::$(sed -n '5p' < outputs/build-outputs.txt)"
 
       - uses: actions/checkout@v1
         with:
@@ -103,8 +106,7 @@ jobs:
           tag_name: ${{ steps.artifacts.outputs.version }}
           release_name: Release ${{ steps.artifacts.outputs.ext_version }}
           target_commitish: ${{ steps.artifacts.outputs.commit_hash }}
-          draft: false
-          prerelease: false
+          prerelease: ${{ steps.artifacts.outputs.pre_release }}
 
       - name: Upload release asset
         id: upload-release-asset
