@@ -36,7 +36,8 @@
     }
   },
   "require-dev": {
-    "plesk/pm-api-stubs": "^17.8"
+    "plesk/pm-api-stubs": "^17.8",
+    "kherge/semver": "^1.0"
   },
   "require": {
     "cloudflare/sdk": "^1.1",

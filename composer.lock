@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1385fe92db31d073db63110b36dbd563",
+    "content-hash": "e58f27e3cdda1fed2a1a5f0d9d978430",
     "packages": [
         {
             "name": "cloudflare/sdk",
@@ -376,6 +376,58 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "kherge/semver",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kherge-php/semver.git",
+                "reference": "dad7c4f191f49cbb8e00b251f6a16abd76b1c908"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kherge-php/semver/zipball/dad7c4f191f49cbb8e00b251f6a16abd76b1c908",
+                "reference": "dad7c4f191f49cbb8e00b251f6a16abd76b1c908",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/KHerGe/Version/functions.php"
+                ],
+                "psr-4": {
+                    "KHerGe\\Version\\": "src/KHerGe/Version"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Herrera",
+                    "email": "kevin@herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Manages semantic version numbers and compares them.",
+            "keywords": [
+                "semantic",
+                "semver",
+                "versioning"
+            ],
+            "time": "2017-02-01T03:28:03+00:00"
+        },
         {
             "name": "plesk/pm-api-stubs",
             "version": "17.9.11",
