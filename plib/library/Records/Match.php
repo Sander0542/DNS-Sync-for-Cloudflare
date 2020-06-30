@@ -31,7 +31,8 @@ class Modules_DnsSyncCloudflare_Records_Match
         return null;
     }
 
-    public static function doRecordMatch($cloudflareRecord, PleskRecord $pleskRecord) {
+    public static function doRecordMatch($cloudflareRecord, PleskRecord $pleskRecord)
+    {
         //Check if the types are the same
         if ($pleskRecord->type == $cloudflareRecord->type)
         {
