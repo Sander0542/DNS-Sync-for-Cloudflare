@@ -31,7 +31,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Record
         $record->type = $pleskRecord->type;
         $record->name = $pleskRecord->host;
 
-        $record->proxied = (bool)Settings::useCloudflareProxy($pleskRecord->siteId, $pleskRecord->type);
+        $record->proxied = (bool)Settings::useCloudflareProxy(pm_Domain::getByDomainId($pleskRecord->siteId), $pleskRecord->type);
 //        $record->proxied = false;
 
         $record->content = $pleskRecord->value;
