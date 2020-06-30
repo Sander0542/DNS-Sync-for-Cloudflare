@@ -3,9 +3,9 @@
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
 use Modules_DnsSyncCloudflare_Records_List as RecordList;
 use Modules_DnsSyncCloudflare_Task_Sync as SyncTask;
-use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 use Modules_DnsSyncCloudflare_Util_Permissions as Permissions;
 use Modules_DnsSyncCloudflare_Util_Records as RecordsUtil;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class DomainController extends pm_Controller_Action
 {
