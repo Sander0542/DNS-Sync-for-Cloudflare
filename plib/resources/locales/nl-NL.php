@@ -34,6 +34,7 @@ $messages = [
     'button.syncDNS' => 'Synchroniseer DNS',
     'button.save' => 'Opslaan',
     'button.login' => 'Inloggen',
+    'button.logout' => 'Uitloggen',
 
     'text.zoneIdNotFound' => 'Zone ID niet gevonden',
     'text.recordNotFound' => 'Record niet gevonden',
@@ -50,6 +51,7 @@ $messages = [
     'message.noRecordsEdited' => 'Geen records gemaakt of geupdate.',
     'message.xRecordsUpdated' => '%%count%% record(s) gemaakt of geupdate.',
     'message.signedInAs' => 'Ingelogd als %%email%%.',
+    'message.loggedOut' => 'Succesvol uitgelogd.',
 
     'task.sync.running' => 'Plesk DNS synchroniseren met Cloudflare DNS',
     'task.sync.done' => 'Gesynchroniseerde Plesk DNS naar Cloudflare DNS Records Gecreëerd: %%createdCount%% Records Bijgewerkt: %%updatedCount%% Records verwijderd: %%deletedCount%%',

@@ -272,6 +272,24 @@ class DomainController extends pm_Controller_Action
 //        $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $siteID)]);
     }
 
+    public function logoutAction()
+    {
+        $this->_helper->viewRenderer->setNoRender();
+
+        $siteID = $this->getRequest()->getParam("site_id");
+
+        $domain = Permissions::checkAccess($siteID, true);
+
+        if ($domain instanceof pm_Domain)
+        {
+            pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain), null);
+            pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain), null);
+        }
+
+        $this->_status->addMessage('info', pm_Locale::lmsg('message.loggedOut'));
+        $this->redirect('domain/api?site_id=' . $siteID);
+    }
+
     private function _getRecordsList(pm_Domain $domain, $cloudflare)
     {
         $options = [
