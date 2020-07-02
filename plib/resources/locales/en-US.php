@@ -34,6 +34,8 @@ $messages = [
     'button.syncAll' => 'Sync All',
     'button.syncSelected' => 'Sync Selected',
     'button.save' => 'Save',
+    'button.login' => 'Login',
+    'button.logout' => 'Logout',
 
     'text.zoneIdNotFound' => 'Zone ID not found',
     'text.recordNotFound' => 'Record not found',
@@ -50,6 +52,7 @@ $messages = [
     'message.noRecordsEdited' => 'No records created or updated.',
     'message.xRecordsUpdated' => '%%count%% record(s) created or updated.',
     'message.signedInAs' => 'Signed in as %%email%%.',
+    'message.loggedOut' => 'Successfully logged out.',
 
     'permission.cloudflare.title' => 'DNS Sync for Cloudflare',
     'permission.cloudflare.description' => 'Allow customers to use DNS Sync for Cloudflare',

@@ -75,7 +75,7 @@ class DomainController extends pm_Controller_Action
             else
             {
                 $this->_status->addMessage('error', pm_Locale::lmsg('message.noConnection'));
-//                $this->forward('api',null,null,['site_id' => $domain->getId()]);
+                $this->redirect('domain/api?site_id=' . $domain->getId());
             }
         }
         else
@@ -219,6 +219,7 @@ class DomainController extends pm_Controller_Action
                 ]
             ]);
             $form->addControlButtons([
+                'sendTitle' => pm_Locale::lmsg('button.login'),
                 'cancelLink' => pm_Context::getModulesListUrl(),
             ]);
 
@@ -228,6 +229,18 @@ class DomainController extends pm_Controller_Action
                 pm_Settings::setEncrypted(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain), $form->getValue(Settings::CLOUDFLARE_API_KEY));
                 $this->_status->addMessage('info', pm_Locale::lmsg('message.apiSaved'));
                 $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $domain->getId())]);
+            }
+
+            if (!empty(pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain))))
+            {
+                $this->view->logout = [
+                    [
+                        'title' => pm_Locale::lmsg('button.logout'),
+                        'description' => 'Sign out for this domain.',
+                        'class' => 'sb-button1',
+                        'action' => 'logout?site_id=' . $domain->getId(),
+                    ],
+                ];
             }
 
             $this->view->form = $form;
@@ -258,6 +271,24 @@ class DomainController extends pm_Controller_Action
         $this->redirect('domain/records?site_id=' . $siteID);
 
 //        $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $siteID)]);
+    }
+
+    public function logoutAction()
+    {
+        $this->_helper->viewRenderer->setNoRender();
+
+        $siteID = $this->getRequest()->getParam("site_id");
+
+        $domain = Permissions::checkAccess($siteID, true);
+
+        if ($domain instanceof pm_Domain)
+        {
+            pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain), null);
+            pm_Settings::set(Settings::getDomainKey(Settings::CLOUDFLARE_API_KEY, $domain), null);
+        }
+
+        $this->_status->addMessage('info', pm_Locale::lmsg('message.loggedOut'));
+        $this->redirect('domain/api?site_id=' . $siteID);
     }
 
     private function _getRecordsList(pm_Domain $domain, $cloudflare)
