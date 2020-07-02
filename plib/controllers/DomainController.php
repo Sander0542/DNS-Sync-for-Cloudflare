@@ -219,6 +219,7 @@ class DomainController extends pm_Controller_Action
                 ]
             ]);
             $form->addControlButtons([
+                'sendTitle' => pm_Locale::lmsg('button.login'),
                 'cancelLink' => pm_Context::getModulesListUrl(),
             ]);
 

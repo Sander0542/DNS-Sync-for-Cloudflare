@@ -33,6 +33,7 @@ $messages = [
 
     'button.syncDNS' => 'Synchroniseer DNS',
     'button.save' => 'Opslaan',
+    'button.login' => 'Inloggen',
 
     'text.zoneIdNotFound' => 'Zone ID niet gevonden',
     'text.recordNotFound' => 'Record niet gevonden',

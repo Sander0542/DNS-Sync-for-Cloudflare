@@ -34,6 +34,7 @@ $messages = [
     'button.syncAll' => 'Sync All',
     'button.syncSelected' => 'Sync Selected',
     'button.save' => 'Save',
+    'button.login' => 'Login',
 
     'text.zoneIdNotFound' => 'Zone ID not found',
     'text.recordNotFound' => 'Record not found',
