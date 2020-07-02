@@ -15,6 +15,8 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
      */
     private $adapter;
 
+    private $userId;
+
     /**
      * Module_DnsSyncCloudflare_Cloudflare_Auth constructor.
      * @param Guzzle $adapter
@@ -22,6 +24,8 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
     private function __construct(Guzzle $adapter)
     {
         $this->adapter = $adapter;
+
+        $this->userId = $this->getUser()->getUserID();
     }
 
     /**
@@ -90,6 +94,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
             {
                 $key = new APIKey($email, $apiKey);
                 $adapter = new Guzzle($key);
+
                 return new self($adapter);
             }
         }
