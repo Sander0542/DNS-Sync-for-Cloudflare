@@ -54,7 +54,7 @@ class IndexController extends pm_Controller_Action
         {
             if (!Settings::canUseAPI($domain))
             {
-                return false;
+                continue;
             }
 
             $cloudflareID = pm_Locale::lmsg('text.zoneIdNotFound');
