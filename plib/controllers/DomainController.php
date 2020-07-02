@@ -230,6 +230,17 @@ class DomainController extends pm_Controller_Action
                 $this->_helper->json(['redirect' => pm_Context::getActionUrl('domain', 'records?site_id=' . $domain->getId())]);
             }
 
+            if (!empty(pm_Settings::getDecrypted(Settings::getDomainKey(Settings::CLOUDFLARE_EMAIL, $domain)))) {
+                $this->view->logout = [
+                    [
+                        'title' => pm_Locale::lmsg('button.logout'),
+                        'description' => 'Sign out for this domain.',
+                        'class' => 'sb-button1',
+                        'action' => 'logout?site_id=' . $domain->getId(),
+                    ],
+                ];
+            }
+
             $this->view->form = $form;
         }
         else
