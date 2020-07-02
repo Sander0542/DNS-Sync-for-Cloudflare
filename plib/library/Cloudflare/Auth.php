@@ -3,11 +3,10 @@
 use Cloudflare\API\Adapter\Guzzle;
 use Cloudflare\API\Auth\APIKey;
 use Cloudflare\API\Endpoints\DNS;
-use Cloudflare\API\Endpoints\Zones;
 use Cloudflare\API\Endpoints\User;
-use GuzzleHttp\Exception\ClientException;
-use Modules_DnsSyncCloudflare_Util_Settings as Settings;
+use Cloudflare\API\Endpoints\Zones;
 use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class Modules_DnsSyncCloudflare_Cloudflare_Auth
 {
@@ -69,7 +68,8 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
         return null;
     }
 
-    public function getRecords(pm_Domain $domain) {
+    public function getRecords(pm_Domain $domain)
+    {
         $zoneID = $this->getZone($domain)->id;
 
         return $this->getDNS()->listRecords($zoneID, '', '', '', 1, 250)->result;
@@ -93,7 +93,7 @@ class Modules_DnsSyncCloudflare_Cloudflare_Auth
                 return new self($adapter);
             }
         }
-        catch (ClientException $exception)
+        catch (Exception $exception)
         {
             //TODO: Error reporting
         }
