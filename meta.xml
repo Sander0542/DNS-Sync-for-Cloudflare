@@ -6,8 +6,8 @@
   <category>dns</category>
   <category>server_tool</category>
   <category>performance</category>
-  <version>0.2.3</version>
-  <release>5</release>
+  <version>0.2.4</version>
+  <release>6</release>
   <vendor>Sander Jochems</vendor>
   <url>https://www.sanderjochems.com/</url>
   <support_url>https://github.com/Sander0542/DNS-Sync-for-Cloudflare</support_url>
