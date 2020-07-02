@@ -35,6 +35,9 @@ class Modules_DnsSyncCloudflare_Records_List
                 case SyncRecord::STATUS_REMOVE:
                     $syncStatus = pm_Context::getBaseUrl() . 'images/error2.png';
                     break;
+                case SyncRecord::STATUS_DONT_SYNC:
+                    $syncStatus = pm_Context::getBaseUrl() . 'images/off.png';
+                    break;
             }
 
             if ($record->cloudflareRecord !== null)

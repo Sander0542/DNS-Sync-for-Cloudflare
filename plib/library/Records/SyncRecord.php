@@ -1,12 +1,11 @@
 <?php
 
-use PleskX\Api\Struct\Dns\Info as PleskRecord;
-
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 use Modules_DnsSyncCloudflare_Records_Match as RecordsMatch;
 use Modules_DnsSyncCloudflare_Util_PleskDNS as PleskDNS;
-use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 use Modules_DnsSyncCloudflare_Util_Settings as Settings;
+use PleskX\Api\Struct\Dns\Info as PleskRecord;
 
 class Modules_DnsSyncCloudflare_Records_SyncRecord
 {
@@ -14,6 +13,7 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
     const STATUS_RECORD = 2;
     const STATUS_REMOVE = 3;
     const STATUS_NONE = 4;
+    const STATUS_DONT_SYNC = 5;
 
     /**
      * @var CloudflareAuth
@@ -52,6 +52,11 @@ class Modules_DnsSyncCloudflare_Records_SyncRecord
      */
     public function getStatus()
     {
+        if (!Settings::syncRecordType($this->getRecordType(false), $this->domain))
+        {
+            return self::STATUS_DONT_SYNC;
+        }
+
         if ($this->pleskRecord !== null)
         {
             if ($this->cloudflareRecord !== null)
