@@ -57,6 +57,10 @@ class Modules_DnsSyncCloudflare_Util_Settings
         $domainParts = explode('.', $domain->getName());
         $tld = end($domainParts);
 
-        return in_array($tld, self::INVALID_TLDS);
+        if (in_array($tld, self::INVALID_TLDS)) {
+            return false;
+        }
+
+        return true;
     }
 }
