@@ -12,6 +12,14 @@ class Modules_DnsSyncCloudflare_Util_Settings
     const CLOUDFLARE_AUTO_SYNC = 'cloudflareAutomaticSync';
     const CLOUDFLARE_REMOVE_UNUSED = 'cloudflareRemoveUnused';
 
+    const INVALID_TLDS = [
+        'cf',
+        'ga',
+        'gq',
+        'ml',
+        'tk'
+    ];
+
     public static function getUserKey($key, $userID = null)
     {
         return 'u' . (is_numeric($userID) ? $userID : pm_Session::getClient()->getId()) . '_' . $key;
@@ -43,5 +51,12 @@ class Modules_DnsSyncCloudflare_Util_Settings
             }
         }
         return false;
+    }
+
+    public static function canUseAPI(pm_Domain $domain) {
+        $domainParts = explode('.', $domain->getName());
+        $tld = end($domainParts);
+
+        return in_array($tld, self::INVALID_TLDS);
     }
 }

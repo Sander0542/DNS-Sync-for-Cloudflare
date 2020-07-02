@@ -1,5 +1,7 @@
 <?php
 
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
+
 class Modules_DnsSyncCloudflare_CustomButtons extends pm_Hook_CustomButtons
 {
     /**
@@ -37,6 +39,10 @@ class Modules_DnsSyncCloudflare_CustomButtons extends pm_Hook_CustomButtons
         }
         foreach (pm_Session::getCurrentDomains(true) as $domain)
         {
+            if (!Settings::canUseAPI($domain)) {
+                return false;
+            }
+
             if ($domain->getId() == $options['site_id'])
             {
                 if (pm_Session::getClient()->hasPermission('manage_cloudflare', $domain))
@@ -46,4 +52,5 @@ class Modules_DnsSyncCloudflare_CustomButtons extends pm_Hook_CustomButtons
             }
         }
     }
+
 }

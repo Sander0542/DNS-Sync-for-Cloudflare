@@ -1,8 +1,9 @@
 <?php
 
 use GuzzleHttp\Exception\ClientException;
-use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
 use Modules_DnsSyncCloudflare_Cloudflare_Auth as CloudflareAuth;
+use Modules_DnsSyncCloudflare_Cloudflare_Record as CloudflareRecord;
+use Modules_DnsSyncCloudflare_Util_Settings as Settings;
 
 class IndexController extends pm_Controller_Action
 {
@@ -51,6 +52,11 @@ class IndexController extends pm_Controller_Action
          */
         foreach (pm_Session::getCurrentDomains(true) as $domain)
         {
+            if (!Settings::canUseAPI($domain))
+            {
+                return false;
+            }
+
             $cloudflareID = pm_Locale::lmsg('text.zoneIdNotFound');
 
             $cloudflare = CloudflareAuth::login($domain);
