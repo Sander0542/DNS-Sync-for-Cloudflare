@@ -75,7 +75,7 @@ class DomainController extends pm_Controller_Action
             else
             {
                 $this->_status->addMessage('error', pm_Locale::lmsg('message.noConnection'));
-//                $this->forward('api',null,null,['site_id' => $domain->getId()]);
+                $this->redirect('domain/api?site_id=' . $domain->getId());
             }
         }
         else
